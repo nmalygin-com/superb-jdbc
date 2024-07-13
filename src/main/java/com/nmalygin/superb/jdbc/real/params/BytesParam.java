@@ -29,16 +29,16 @@ import com.nmalygin.superb.jdbc.api.Param;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class StringParam implements Param {
+public final class BytesParam implements Param {
 
-    private final String param;
+    private final byte[] param;
 
-    public StringParam(String param) {
+    public BytesParam(byte[] param) {
         this.param = param;
     }
 
     @Override
     public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
-        preparedStatement.setString(1, param);
+        preparedStatement.setBytes(parameterIndex, param);
     }
 }

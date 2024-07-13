@@ -26,19 +26,20 @@ package com.nmalygin.superb.jdbc.real.params;
 
 import com.nmalygin.superb.jdbc.api.Param;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class StringParam implements Param {
+public final class BigDecimalParam implements Param {
 
-    private final String param;
+    private final BigDecimal param;
 
-    public StringParam(String param) {
+    public BigDecimalParam(BigDecimal param) {
         this.param = param;
     }
 
     @Override
     public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
-        preparedStatement.setString(1, param);
+        preparedStatement.setBigDecimal(parameterIndex, param);
     }
 }
