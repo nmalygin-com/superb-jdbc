@@ -22,11 +22,15 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api;
+package com.nmalygin.superb.jdbc.real;
 
+import com.nmalygin.superb.jdbc.api.Param;
+
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public interface Transactions {
-    Transaction transaction() throws SQLException;
-    Transaction transaction(int withIsolationLevel) throws SQLException;
+interface Sql {
+    void append(String sqlFragment, Param... withParams);
+    String parameterizedSql();
+    void fill(PreparedStatement preparedStatement) throws SQLException;
 }

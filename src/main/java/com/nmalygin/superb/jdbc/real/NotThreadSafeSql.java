@@ -22,11 +22,46 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api;
+package com.nmalygin.superb.jdbc.real;
 
+import com.nmalygin.superb.jdbc.api.Param;
+
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public interface Transactions {
-    Transaction transaction() throws SQLException;
-    Transaction transaction(int withIsolationLevel) throws SQLException;
+final class NotThreadSafeSql implements Sql {
+
+    private final StringBuilder stringBuilder;
+    private final List<Param> params;
+
+    NotThreadSafeSql(StringBuilder stringBuilder, List<Param> params) {
+        this.stringBuilder = stringBuilder;
+        this.params = params;
+    }
+
+    NotThreadSafeSql(String sqlFragment, Param... withParams) {
+        this(new StringBuilder(sqlFragment), new ArrayList<>(Arrays.asList(withParams)));
+    }
+
+    @Override
+    public void append(String sqlFragment, Param... withParams) {
+        stringBuilder.append(sqlFragment);
+        params.addAll(Arrays.asList(withParams));
+    }
+
+    @Override
+    public String parameterizedSql() {
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public void fill(PreparedStatement preparedStatement) throws SQLException {
+        int i = 1;
+        for (Param param : params) {
+            param.fill(preparedStatement, ++i);
+        }
+    }
 }

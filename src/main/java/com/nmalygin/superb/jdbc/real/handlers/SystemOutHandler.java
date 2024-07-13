@@ -22,11 +22,28 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api;
+package com.nmalygin.superb.jdbc.real.handlers;
 
+import com.nmalygin.superb.jdbc.api.ResultSetHandler;
+
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-public interface Transactions {
-    Transaction transaction() throws SQLException;
-    Transaction transaction(int withIsolationLevel) throws SQLException;
+public class SystemOutHandler implements ResultSetHandler<Void> {
+    @Override
+    public Void handle(ResultSet resultSet) throws SQLException {
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+        int columnsNumber = rsmd.getColumnCount();
+        while (resultSet.next()) {
+            for (int i = 1; i <= columnsNumber; i++) {
+                if (i > 1) System.out.print("  |  ");
+                String columnValue = resultSet.getString(i);
+                System.out.print(columnValue);
+            }
+            System.out.println();
+        }
+
+        return null;
+    }
 }

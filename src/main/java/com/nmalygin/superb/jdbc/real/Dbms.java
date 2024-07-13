@@ -22,11 +22,38 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api;
+package com.nmalygin.superb.jdbc.real;
 
+import com.nmalygin.superb.jdbc.api.*;
+
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
-public interface Transactions {
-    Transaction transaction() throws SQLException;
-    Transaction transaction(int withIsolationLevel) throws SQLException;
+public final class Dbms implements Queries, Changes, Transactions {
+
+    private final DataSource dataSource;
+
+    public Dbms(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    @Override
+    public Query query(String sql, Param... withParams) {
+        return new DataSourceQuery(dataSource, sql, withParams);
+    }
+
+    @Override
+    public Change change(String sql, Param... withParams) {
+        return new DataSourceChange(dataSource, sql, withParams);
+    }
+
+    @Override
+    public Transaction transaction() throws SQLException {
+        return new JdbcTransaction(dataSource);
+    }
+
+    @Override
+    public Transaction transaction(int withIsolationLevel) throws SQLException {
+        return new JdbcTransaction(dataSource, withIsolationLevel);
+    }
 }

@@ -22,11 +22,37 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api;
+package com.nmalygin.superb.jdbc.real;
 
+import com.nmalygin.superb.jdbc.api.Change;
+import com.nmalygin.superb.jdbc.api.Param;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public interface Transactions {
-    Transaction transaction() throws SQLException;
-    Transaction transaction(int withIsolationLevel) throws SQLException;
+final class DataSourceChange implements Change {
+
+    private final DataSource dataSource;
+    private final Sql sql;
+
+    DataSourceChange(DataSource dataSource, Sql sql) {
+        this.dataSource = dataSource;
+        this.sql = sql;
+    }
+
+    DataSourceChange(DataSource dataSource, String sql, Param... withParams) {
+        this(dataSource, new NotThreadSafeSql(sql, withParams));
+    }
+
+    @Override
+    public int apply() throws SQLException {
+        try (final Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql.parameterizedSql())) {
+            sql.fill(preparedStatement);
+
+            return preparedStatement.executeUpdate();
+        }
+    }
 }
