@@ -24,9 +24,11 @@
 
 package com.nmalygin.superb.jdbc.api;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public interface Param {
-    void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException;
+public interface Transaction extends AutoCloseable {
+    void commit() throws SQLException;
+    void setSavepoint(String withName);
+    void rollback() throws SQLException;
+    void rollbackTo(String savepointWithName);
 }

@@ -24,9 +24,7 @@
 
 package com.nmalygin.superb.jdbc.api;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-public interface Param {
-    void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException;
+public interface Transactions {
+    Transaction transaction();
+    Transaction transaction(int withIsolationLevel);
 }
