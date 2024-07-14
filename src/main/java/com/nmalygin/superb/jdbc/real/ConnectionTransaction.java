@@ -24,47 +24,24 @@
 
 package com.nmalygin.superb.jdbc.real;
 
-import com.nmalygin.superb.jdbc.api.*;
+import com.nmalygin.superb.jdbc.api.Change;
+import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.Query;
+import com.nmalygin.superb.jdbc.api.Transaction;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.HashMap;
 import java.util.Map;
 
-final class JdbcTransaction implements Transaction {
+final class ConnectionTransaction implements Transaction {
 
     private final Connection connection;
     private final Map<String, Savepoint> savePoints = new HashMap<>();
 
-    JdbcTransaction(DataSource dataSource) throws SQLException {
-        this.connection = dataSource.getConnection();
-
-        try {
-            connection.setAutoCommit(false);
-        } catch (Throwable t) {
-            connection.close();
-            throw t;
-        }
-    }
-
-    JdbcTransaction(DataSource dataSource, int isolationLevel) throws SQLException {
-        this.connection = dataSource.getConnection();
-
-        try {
-            connection.setAutoCommit(false);
-        } catch (Throwable t) {
-            connection.close();
-            throw t;
-        }
-
-        try {
-            connection.setTransactionIsolation(isolationLevel);
-        } catch (Throwable t) {
-            connection.close();
-            throw t;
-        }
+    ConnectionTransaction(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -112,6 +89,7 @@ final class JdbcTransaction implements Transaction {
             try {
                 connection.close();
             } catch (Throwable ignore) {
+                // todo: add logging
             }
         }
     }

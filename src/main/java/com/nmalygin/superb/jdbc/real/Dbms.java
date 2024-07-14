@@ -27,6 +27,7 @@ package com.nmalygin.superb.jdbc.real;
 import com.nmalygin.superb.jdbc.api.*;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public final class Dbms implements Queries, Changes, Transactions {
@@ -49,11 +50,45 @@ public final class Dbms implements Queries, Changes, Transactions {
 
     @Override
     public Transaction transaction() throws SQLException {
-        return new JdbcTransaction(dataSource);
+        final Connection connection = dataSource.getConnection();
+
+        try {
+            connection.setAutoCommit(false);
+        } catch (Throwable t) {
+            connection.close();
+            throw t;
+        }
+
+        return new ConnectionTransaction(connection);
     }
 
     @Override
     public Transaction transaction(int withIsolationLevel) throws SQLException {
-        return new JdbcTransaction(dataSource, withIsolationLevel);
+        final Connection connection = dataSource.getConnection();
+
+        try {
+            connection.setAutoCommit(false);
+        } catch (Throwable t) {
+            try {
+               connection.setAutoCommit(true);
+            } catch (Throwable ignore) {
+            }
+
+            try {
+                connection.close();
+            } catch (Throwable ignore) {
+            }
+
+            throw t;
+        }
+
+        try {
+            connection.setTransactionIsolation(withIsolationLevel);
+        } catch (Throwable t) {
+            connection.close();
+            throw t;
+        }
+
+        return new ConnectionTransaction(connection);
     }
 }
