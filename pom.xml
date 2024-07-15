@@ -29,17 +29,12 @@ SOFTWARE.
 
     <groupId>com.nmalygin</groupId>
     <artifactId>superb-jdbc</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
+
     <name>Superb JDBC</name>
     <description>Object-Oriented way to use JDBC API.</description>
     <url>https://github.com/nmalygin-com/superb-jdbc</url>
-
-    <properties>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <licenses>
         <license>
@@ -64,6 +59,12 @@ SOFTWARE.
         <url>https://github.com/nmalygin-com/superb-jdbc</url>
     </scm>
 
+    <properties>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -86,6 +87,7 @@ SOFTWARE.
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>jar</goal>
                         </goals>
@@ -105,6 +107,15 @@ SOFTWARE.
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.5.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                </configuration>
             </plugin>
         </plugins>
     </build>
