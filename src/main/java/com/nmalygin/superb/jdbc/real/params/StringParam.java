@@ -39,6 +39,6 @@ public class StringParam implements Param {
 
     @Override
     public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
-        preparedStatement.setString(1, param);
+        preparedStatement.setString(parameterIndex, param);
     }
 }
