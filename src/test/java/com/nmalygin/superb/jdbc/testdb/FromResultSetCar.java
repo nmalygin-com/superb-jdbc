@@ -24,30 +24,24 @@
 
 package com.nmalygin.superb.jdbc.testdb;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
-final public class CarsDB {
+final class FromResultSetCar implements Car {
+    private final UUID id;
+    private final String name;
 
-    private final DataSource dataSource;
-
-    public CarsDB(DataSource dataSource) {
-        this.dataSource = dataSource;
+    FromResultSetCar(ResultSet resultSet) throws SQLException {
+        this.id = resultSet.getObject("id", UUID.class);
+        this.name = resultSet.getString("name");
     }
 
-    public void init() throws SQLException {
-        String sql =
-                "CREATE TABLE cars " +
-                        "(id UUID," +
-                        "name VARCHAR NOT NULL, " +
-                        "PRIMARY KEY (id)" +
-                        ")";
+    public UUID id() {
+        return id;
+    }
 
-        try (final Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.executeUpdate();
-        }
+    public String name() {
+        return name;
     }
 }

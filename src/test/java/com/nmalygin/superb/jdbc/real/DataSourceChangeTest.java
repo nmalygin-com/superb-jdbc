@@ -1,0 +1,79 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2024 Nikolai Malygin
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.nmalygin.superb.jdbc.real;
+
+import com.nmalygin.superb.jdbc.H2DataSource;
+import com.nmalygin.superb.jdbc.real.params.ObjectParam;
+import com.nmalygin.superb.jdbc.real.params.StringParam;
+import com.nmalygin.superb.jdbc.testdb.Car;
+import com.nmalygin.superb.jdbc.testdb.CarsDB;
+import com.nmalygin.superb.jdbc.testdb.DataSourceCarsTable;
+import org.junit.jupiter.api.Test;
+
+import javax.sql.DataSource;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class DataSourceChangeTest {
+
+    @Test
+    void simpleInsert() throws SQLException {
+        final DataSource dataSource = new H2DataSource();
+        new CarsDB(dataSource).init();
+        final UUID id = UUID.randomUUID();
+        final String name = "Toyota";
+
+        new DataSourceChange(dataSource, "INSERT INTO cars (id, name) VALUES ('" + id + "', '" + name + "')")
+                .apply();
+
+        final List<Car> cars = new DataSourceCarsTable(dataSource).cars();
+        assertEquals(1, cars.size());
+        assertEquals(id, cars.get(0).id());
+        assertEquals(name, cars.get(0).name());
+    }
+
+    @Test
+    void parameterizedInsert() throws SQLException {
+        final DataSource dataSource = new H2DataSource();
+        new CarsDB(dataSource).init();
+        final UUID id = UUID.randomUUID();
+        final String name = "Toyota";
+
+        new DataSourceChange(dataSource,
+                "INSERT INTO cars (id, name) VALUES (?, ?)",
+                new ObjectParam(id),
+                new StringParam(name))
+                .apply();
+
+        final List<Car> cars = new DataSourceCarsTable(dataSource).cars();
+        assertEquals(1, cars.size());
+        assertEquals(id, cars.get(0).id());
+        assertEquals(name, cars.get(0).name());
+    }
+}

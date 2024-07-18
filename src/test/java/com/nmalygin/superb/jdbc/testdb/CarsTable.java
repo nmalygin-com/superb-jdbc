@@ -24,27 +24,11 @@
 
 package com.nmalygin.superb.jdbc.testdb;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 
-public class CarsTable {
-
-    private final DataSource dataSource;
-
-    public CarsTable(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public void insert(UUID id, String name) throws SQLException {
-        final String sql = "INSERT INTO cars (id, name) VALUES (?, ?)";
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setObject(1, id);
-            preparedStatement.setString(2, name);
-            preparedStatement.executeUpdate();
-        }
-    }
+public interface CarsTable {
+    void insert(UUID id, String name) throws SQLException;
+    List<Car> cars() throws SQLException;
 }

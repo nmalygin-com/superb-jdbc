@@ -34,7 +34,7 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class H2DataSource implements DataSource {
+public final class H2DataSource implements DataSource {
 
     private final DataSource dataSource;
 

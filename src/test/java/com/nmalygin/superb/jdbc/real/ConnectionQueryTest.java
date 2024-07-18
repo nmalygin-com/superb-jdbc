@@ -26,67 +26,33 @@ package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.H2DataSource;
 import com.nmalygin.superb.jdbc.real.handlers.StringListHandler;
-import com.nmalygin.superb.jdbc.real.params.StringParam;
 import com.nmalygin.superb.jdbc.testdb.CarsDB;
 import com.nmalygin.superb.jdbc.testdb.CarsTable;
 import com.nmalygin.superb.jdbc.testdb.DataSourceCarsTable;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-final class DataSourceQueryTest {
-
+class ConnectionQueryTest {
     @Test
-    void simpleQuery() throws SQLException {
+    void simpleInsert() throws SQLException {
         final DataSource dataSource = new H2DataSource();
         new CarsDB(dataSource).init();
         final CarsTable carsTable = new DataSourceCarsTable(dataSource);
         carsTable.insert(UUID.randomUUID(), "Toyota");
 
-        final List<String> names = new DataSourceQuery(dataSource, "SELECT name FROM cars")
-                .execute(new StringListHandler("name"));
+        try (final Connection connection = dataSource.getConnection()) {
+            final List<String> names = new ConnectionQuery(connection, "SELECT name FROM cars")
+                    .execute(new StringListHandler("name"));
 
-        assertEquals(1, names.size());
-        assertTrue(names.contains("Toyota"));
-    }
-
-    @Test
-    void withParamsQuery() throws SQLException {
-        final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
-        final CarsTable carsTable = new DataSourceCarsTable(dataSource);
-        carsTable.insert(UUID.randomUUID(), "Toyota");
-        carsTable.insert(UUID.randomUUID(), "Ford");
-
-        final List<String> names = new DataSourceQuery(dataSource,
-                "SELECT name FROM cars WHERE name = ?",
-                new StringParam("Toyota"))
-                .execute(new StringListHandler("name"));
-
-        assertEquals(1, names.size());
-        assertTrue(names.contains("Toyota"));
-    }
-
-    @Test
-    void buildQuery() throws SQLException {
-        final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
-        final CarsTable carsTable = new DataSourceCarsTable(dataSource);
-        carsTable.insert(UUID.randomUUID(), "Toyota");
-        carsTable.insert(UUID.randomUUID(), "Ford");
-
-        final List<String> names = new DataSourceQuery(dataSource,
-                "SELECT name FROM cars ")
-                .append("ORDER BY name")
-                .execute(new StringListHandler("name"));
-
-        assertEquals(2, names.size());
-        assertEquals("Ford", names.get(0));
+            assertEquals(1, names.size());
+            assertTrue(names.contains("Toyota"));
+        }
     }
 }

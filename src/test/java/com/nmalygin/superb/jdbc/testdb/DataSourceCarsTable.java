@@ -27,27 +27,41 @@ package com.nmalygin.superb.jdbc.testdb;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-final public class CarsDB {
+final public class DataSourceCarsTable implements CarsTable {
 
     private final DataSource dataSource;
 
-    public CarsDB(DataSource dataSource) {
+    public DataSourceCarsTable(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public void init() throws SQLException {
-        String sql =
-                "CREATE TABLE cars " +
-                        "(id UUID," +
-                        "name VARCHAR NOT NULL, " +
-                        "PRIMARY KEY (id)" +
-                        ")";
-
+    public void insert(UUID id, String name) throws SQLException {
+        final String sql = "INSERT INTO cars (id, name) VALUES (?, ?)";
         try (final Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+             final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setObject(1, id);
+            preparedStatement.setString(2, name);
             preparedStatement.executeUpdate();
+        }
+    }
+
+    public List<Car> cars() throws SQLException {
+        final String sql = "SELECT id, name FROM cars";
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            final List<Car> cars = new ArrayList<>();
+            while (resultSet.next()) {
+                cars.add(new FromResultSetCar(resultSet));
+            }
+
+            return cars;
         }
     }
 }

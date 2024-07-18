@@ -22,32 +22,38 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.testdb;
+package com.nmalygin.superb.jdbc.real;
+
+import com.nmalygin.superb.jdbc.H2DataSource;
+import com.nmalygin.superb.jdbc.testdb.Car;
+import com.nmalygin.superb.jdbc.testdb.CarsDB;
+import com.nmalygin.superb.jdbc.testdb.DataSourceCarsTable;
+import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.UUID;
 
-final public class CarsDB {
+import static org.junit.jupiter.api.Assertions.*;
 
-    private final DataSource dataSource;
+class ConnectionChangeTest {
+    @Test
+    void simpleInsert() throws SQLException {
+        final DataSource dataSource = new H2DataSource();
+        new CarsDB(dataSource).init();
+        final UUID id = UUID.randomUUID();
+        final String name = "Toyota";
 
-    public CarsDB(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public void init() throws SQLException {
-        String sql =
-                "CREATE TABLE cars " +
-                        "(id UUID," +
-                        "name VARCHAR NOT NULL, " +
-                        "PRIMARY KEY (id)" +
-                        ")";
-
-        try (final Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.executeUpdate();
+        try (final Connection connection = dataSource.getConnection()) {
+            new ConnectionChange(connection, "INSERT INTO cars (id, name) VALUES ('" + id + "', '" + name + "')")
+                    .apply();
         }
+
+        final List<Car> cars = new DataSourceCarsTable(dataSource).cars();
+        assertEquals(1, cars.size());
+        assertEquals(id, cars.get(0).id());
+        assertEquals(name, cars.get(0).name());
     }
 }

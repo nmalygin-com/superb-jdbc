@@ -84,6 +84,7 @@ final class ConnectionTransaction implements Transaction {
 
     @Override
     public void close() {
+        savePoints.clear();
         // todo: to think about implementation
         if (connection != null) {
             try {
