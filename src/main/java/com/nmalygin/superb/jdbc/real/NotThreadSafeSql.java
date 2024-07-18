@@ -61,7 +61,7 @@ final class NotThreadSafeSql implements Sql {
     public void fill(PreparedStatement preparedStatement) throws SQLException {
         int i = 1;
         for (Param param : params) {
-            param.fill(preparedStatement, ++i);
+            param.fill(preparedStatement, i++);
         }
     }
 }
