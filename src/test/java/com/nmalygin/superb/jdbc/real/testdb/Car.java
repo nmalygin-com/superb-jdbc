@@ -22,32 +22,11 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.testdb;
+package com.nmalygin.superb.jdbc.real.testdb;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.util.UUID;
 
-final public class CarsDB {
-
-    private final DataSource dataSource;
-
-    public CarsDB(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public void init() throws SQLException {
-        String sql =
-                "CREATE TABLE cars " +
-                        "(id UUID," +
-                        "name VARCHAR NOT NULL, " +
-                        "PRIMARY KEY (id)" +
-                        ")";
-
-        try (final Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.executeUpdate();
-        }
-    }
+public interface Car {
+    UUID id();
+    String name();
 }

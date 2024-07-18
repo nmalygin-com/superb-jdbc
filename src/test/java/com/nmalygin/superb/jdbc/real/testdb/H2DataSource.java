@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc;
+package com.nmalygin.superb.jdbc.real.testdb;
 
 import org.h2.jdbcx.JdbcDataSource;
 

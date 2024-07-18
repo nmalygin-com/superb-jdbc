@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.testdb;
+package com.nmalygin.superb.jdbc.real.testdb;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,28 +33,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ConnectionCarsTable implements CarsTable {
+final public class DataSourceCarsTable implements CarsTable {
 
-    private final Connection connection;
+    private final DataSource dataSource;
 
-    public ConnectionCarsTable(Connection connection) {
-        this.connection = connection;
+    public DataSourceCarsTable(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
-    @Override
     public void insert(UUID id, String name) throws SQLException {
         final String sql = "INSERT INTO cars (id, name) VALUES (?, ?)";
-        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, id);
             preparedStatement.setString(2, name);
             preparedStatement.executeUpdate();
         }
     }
 
-    @Override
     public List<Car> cars() throws SQLException {
         final String sql = "SELECT id, name FROM cars";
-        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             final List<Car> cars = new ArrayList<>();
             while (resultSet.next()) {

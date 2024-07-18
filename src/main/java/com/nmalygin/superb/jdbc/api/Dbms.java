@@ -22,26 +22,7 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.testdb;
+package com.nmalygin.superb.jdbc.api;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.UUID;
-
-final class FromResultSetCar implements Car {
-    private final UUID id;
-    private final String name;
-
-    FromResultSetCar(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getObject("id", UUID.class);
-        this.name = resultSet.getString("name");
-    }
-
-    public UUID id() {
-        return id;
-    }
-
-    public String name() {
-        return name;
-    }
+public interface Dbms extends Queries, Changes, Transactions {
 }

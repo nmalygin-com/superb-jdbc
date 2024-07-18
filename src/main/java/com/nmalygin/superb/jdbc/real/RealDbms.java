@@ -30,11 +30,11 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public final class Dbms implements Queries, Changes, Transactions {
+public final class RealDbms implements Dbms {
 
     private final DataSource dataSource;
 
-    public Dbms(DataSource dataSource) {
+    public RealDbms(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

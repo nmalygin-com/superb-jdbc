@@ -22,13 +22,26 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.testdb;
+package com.nmalygin.superb.jdbc.real.testdb;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.UUID;
 
-public interface CarsTable {
-    void insert(UUID id, String name) throws SQLException;
-    List<Car> cars() throws SQLException;
+final class FromResultSetCar implements Car {
+    private final UUID id;
+    private final String name;
+
+    FromResultSetCar(ResultSet resultSet) throws SQLException {
+        this.id = resultSet.getObject("id", UUID.class);
+        this.name = resultSet.getString("name");
+    }
+
+    public UUID id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
 }

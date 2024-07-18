@@ -25,34 +25,21 @@
 package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
+import com.nmalygin.superb.jdbc.api.Dbms;
 import com.nmalygin.superb.jdbc.real.handlers.StringListHandler;
-import com.nmalygin.superb.jdbc.real.testdb.CarsDB;
-import com.nmalygin.superb.jdbc.real.testdb.CarsTable;
-import com.nmalygin.superb.jdbc.real.testdb.DataSourceCarsTable;
-import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
+
 import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+class RealDbmsTest {
+    void test() throws SQLException {
+        DataSource dataSource = new H2DataSource();
+        Dbms dbms = new RealDbms(dataSource);
 
-class ConnectionQueryTest {
-    @Test
-    void simpleInsert() throws SQLException {
-        final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
-        final CarsTable carsTable = new DataSourceCarsTable(dataSource);
-        carsTable.insert(UUID.randomUUID(), "Toyota");
-
-        try (final Connection connection = dataSource.getConnection()) {
-            final List<String> names = new ConnectionQuery(connection, "SELECT name FROM cars")
-                    .execute(new StringListHandler("name"));
-
-            assertEquals(1, names.size());
-            assertTrue(names.contains("Toyota"));
-        }
+        List<String> names = dbms
+                .query("SELECT name FROM names")
+                .execute(new StringListHandler("name"));
     }
 }
