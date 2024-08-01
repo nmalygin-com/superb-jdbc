@@ -22,24 +22,8 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real;
+package com.nmalygin.superb.jdbc.api;
 
-import com.nmalygin.superb.jdbc.api.Rdbms;
-import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
-import com.nmalygin.superb.jdbc.real.handlers.StringListHandler;
-
-import javax.sql.DataSource;
-
-import java.sql.SQLException;
-import java.util.List;
-
-class RealDbmsTest {
-    void test() throws SQLException {
-        DataSource dataSource = new H2DataSource();
-        Rdbms rdbms = new RealRdbms(dataSource);
-
-        List<String> names = rdbms
-                .query("SELECT name FROM names")
-                .executeWith(new StringListHandler("name"));
-    }
+public interface Appendable<T> {
+    T append(String sqlFragment, Param... withParams);
 }

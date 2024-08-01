@@ -24,12 +24,10 @@
 
 package com.nmalygin.superb.jdbc.real;
 
-import com.nmalygin.superb.jdbc.api.Change;
-import com.nmalygin.superb.jdbc.api.Param;
-import com.nmalygin.superb.jdbc.api.Query;
-import com.nmalygin.superb.jdbc.api.Transaction;
+import com.nmalygin.superb.jdbc.api.*;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.HashMap;
@@ -52,6 +50,13 @@ final class ConnectionTransaction implements Transaction {
     @Override
     public Change change(String sql, Param... withParams) {
         return new ConnectionChange(connection, sql, withParams);
+    }
+
+    @Override
+    public Batch batch(String sql) throws SQLException {
+        final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        return new PreparedStatementBatch(preparedStatement);
     }
 
     @Override

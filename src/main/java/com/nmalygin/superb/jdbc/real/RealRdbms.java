@@ -28,13 +28,14 @@ import com.nmalygin.superb.jdbc.api.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public final class RealDbms implements Dbms {
+public final class RealRdbms implements Rdbms {
 
     private final DataSource dataSource;
 
-    public RealDbms(DataSource dataSource) {
+    public RealRdbms(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -46,6 +47,14 @@ public final class RealDbms implements Dbms {
     @Override
     public Change change(String sql, Param... withParams) {
         return new DataSourceChange(dataSource, sql, withParams);
+    }
+
+    @Override
+    public Batch batch(String sql) throws SQLException {
+        Connection connection = dataSource.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        return new ConnectionBatch(connection, new PreparedStatementBatch(preparedStatement));
     }
 
     @Override

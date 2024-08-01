@@ -22,24 +22,23 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real;
+package com.nmalygin.superb.jdbc.real.params;
 
-import com.nmalygin.superb.jdbc.api.Rdbms;
-import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
-import com.nmalygin.superb.jdbc.real.handlers.StringListHandler;
+import com.nmalygin.superb.jdbc.api.Param;
 
-import javax.sql.DataSource;
-
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
-class RealDbmsTest {
-    void test() throws SQLException {
-        DataSource dataSource = new H2DataSource();
-        Rdbms rdbms = new RealRdbms(dataSource);
+public final class BooleanParam implements Param {
 
-        List<String> names = rdbms
-                .query("SELECT name FROM names")
-                .executeWith(new StringListHandler("name"));
+    private final boolean param;
+
+    public BooleanParam(boolean param) {
+        this.param = param;
+    }
+
+    @Override
+    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+        preparedStatement.setBoolean(parameterIndex, param);
     }
 }

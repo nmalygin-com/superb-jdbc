@@ -26,7 +26,7 @@ package com.nmalygin.superb.jdbc.api;
 
 import java.sql.SQLException;
 
-public interface Transaction extends Queries, Changes, AutoCloseable {
+public interface Transaction extends Queries, Changes, Batches, AutoCloseable {
     void commit() throws SQLException;
     void setSavepoint(String withName) throws SQLException;
     void rollback() throws SQLException;

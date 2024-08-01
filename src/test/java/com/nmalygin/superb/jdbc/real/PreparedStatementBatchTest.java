@@ -24,35 +24,42 @@
 
 package com.nmalygin.superb.jdbc.real;
 
-import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
-import com.nmalygin.superb.jdbc.real.handlers.StringListHandler;
+import com.nmalygin.superb.jdbc.api.Batch;
+import com.nmalygin.superb.jdbc.api.Transaction;
+import com.nmalygin.superb.jdbc.real.params.ObjectParam;
+import com.nmalygin.superb.jdbc.real.params.StringParam;
+import com.nmalygin.superb.jdbc.real.testdb.Car;
 import com.nmalygin.superb.jdbc.real.testdb.CarsDB;
-import com.nmalygin.superb.jdbc.real.testdb.CarsTable;
 import com.nmalygin.superb.jdbc.real.testdb.DataSourceCarsTable;
+import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConnectionQueryTest {
+class PreparedStatementBatchTest {
     @Test
-    void simpleInsert() throws SQLException {
+    void succesBatch() throws SQLException {
         final DataSource dataSource = new H2DataSource();
         new CarsDB(dataSource).init();
-        final CarsTable carsTable = new DataSourceCarsTable(dataSource);
-        carsTable.insert(UUID.randomUUID(), "Toyota");
 
-        try (final Connection connection = dataSource.getConnection()) {
-            final List<String> names = new ConnectionQuery(connection, "SELECT name FROM cars")
-                    .executeWith(new StringListHandler("name"));
+        final String sql = "INSERT INTO cars(id, name) VALUES (?, ?)";
 
-            assertEquals(1, names.size());
-            assertTrue(names.contains("Toyota"));
+        try (Connection connection = dataSource.getConnection();
+             Batch batch = new PreparedStatementBatch(connection.prepareStatement(sql))) {
+            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Toyota"));
+            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Mazda"));
+            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Ford"));
+            batch.apply();
         }
+
+        final List<Car> cars = new DataSourceCarsTable(dataSource).cars();
+        assertEquals(3, cars.size());
     }
 }

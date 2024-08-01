@@ -24,22 +24,41 @@
 
 package com.nmalygin.superb.jdbc.real;
 
-import com.nmalygin.superb.jdbc.api.Rdbms;
-import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
-import com.nmalygin.superb.jdbc.real.handlers.StringListHandler;
+import com.nmalygin.superb.jdbc.api.Batch;
+import com.nmalygin.superb.jdbc.api.Param;
 
-import javax.sql.DataSource;
-
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
-class RealDbmsTest {
-    void test() throws SQLException {
-        DataSource dataSource = new H2DataSource();
-        Rdbms rdbms = new RealRdbms(dataSource);
+final class ConnectionBatch implements Batch {
 
-        List<String> names = rdbms
-                .query("SELECT name FROM names")
-                .executeWith(new StringListHandler("name"));
+    final Connection connection;
+    final Batch batch;
+
+    ConnectionBatch(Connection connection, Batch batch) {
+        this.connection = connection;
+        this.batch = batch;
+    }
+
+    @Override
+    public void put(Param... params) throws SQLException {
+        batch.put(params);
+    }
+
+    @Override
+    public void apply() throws SQLException {
+        batch.apply();
+    }
+
+    @Override
+    public void close() {
+        try {
+            batch.close();
+        } catch (Throwable ignored) {
+        }
+        try {
+            connection.close();
+        } catch (Throwable ignored) {
+        }
     }
 }

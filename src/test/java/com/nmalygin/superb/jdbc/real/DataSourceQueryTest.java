@@ -50,7 +50,7 @@ final class DataSourceQueryTest {
         carsTable.insert(UUID.randomUUID(), "Toyota");
 
         final List<String> names = new DataSourceQuery(dataSource, "SELECT name FROM cars")
-                .execute(new StringListHandler("name"));
+                .executeWith(new StringListHandler("name"));
 
         assertEquals(1, names.size());
         assertTrue(names.contains("Toyota"));
@@ -67,7 +67,7 @@ final class DataSourceQueryTest {
         final List<String> names = new DataSourceQuery(dataSource,
                 "SELECT name FROM cars WHERE name = ?",
                 new StringParam("Toyota"))
-                .execute(new StringListHandler("name"));
+                .executeWith(new StringListHandler("name"));
 
         assertEquals(1, names.size());
         assertTrue(names.contains("Toyota"));
@@ -84,7 +84,7 @@ final class DataSourceQueryTest {
         final List<String> names = new DataSourceQuery(dataSource,
                 "SELECT name FROM cars ")
                 .append("ORDER BY name")
-                .execute(new StringListHandler("name"));
+                .executeWith(new StringListHandler("name"));
 
         assertEquals(2, names.size());
         assertEquals("Ford", names.get(0));

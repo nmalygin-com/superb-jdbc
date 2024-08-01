@@ -26,7 +26,6 @@ package com.nmalygin.superb.jdbc.api;
 
 import java.sql.SQLException;
 
-public interface Query {
-    Query append(String sqlFragment, Param... withParams);
-    <R> R execute(ResultSetHandler<R> withHandler) throws SQLException;
+public interface Query extends Appendable<Query> {
+    <R> R executeWith(ResultSetHandler<R> withHandler) throws SQLException;
 }

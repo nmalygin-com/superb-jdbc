@@ -27,5 +27,5 @@ package com.nmalygin.superb.jdbc.api;
 import java.sql.SQLException;
 
 public interface Change {
-    int apply() throws SQLException;
+    void apply() throws SQLException;
 }

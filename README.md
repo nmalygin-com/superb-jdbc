@@ -21,14 +21,14 @@
 </dependency>
 ```
 
-2. Create a dbms object
+2. Create a rdbms object
 ```java
-Dbms dbms = new RealDbms(/* your datasource */);
+Dbms rdbms = new RealDbms(/* your datasource */);
 ```
 
-3. Use the dbms object
+3. Use the rdbms object
 ```java
-List<String> names = dbms
+List<String> names = rdbms
         .query("SELECT name FROM names")
         .execute(new StringListHandler("name"));
 ```

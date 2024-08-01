@@ -22,23 +22,7 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real.params;
+package com.nmalygin.superb.jdbc.api;
 
-import com.nmalygin.superb.jdbc.api.Param;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-public final class Boolean implements Param {
-
-    private final boolean param;
-
-    public Boolean(boolean param) {
-        this.param = param;
-    }
-
-    @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
-        preparedStatement.setBoolean(parameterIndex, param);
-    }
+public interface Rdbms extends Queries, Changes, Batches, Transactions {
 }

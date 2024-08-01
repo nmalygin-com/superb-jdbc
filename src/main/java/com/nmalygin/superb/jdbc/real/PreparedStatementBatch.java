@@ -22,7 +22,42 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api;
+package com.nmalygin.superb.jdbc.real;
 
-public interface Dbms extends Queries, Changes, Transactions {
+import com.nmalygin.superb.jdbc.api.Batch;
+import com.nmalygin.superb.jdbc.api.Param;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+final class PreparedStatementBatch implements Batch {
+
+    private final PreparedStatement preparedStatement;
+
+    public PreparedStatementBatch(PreparedStatement preparedStatement) {
+        this.preparedStatement = preparedStatement;
+    }
+
+    @Override
+    public void put(Param... params) throws SQLException {
+        int i = 1;
+        for (Param param : params) {
+            param.fill(preparedStatement, i++);
+        }
+        preparedStatement.addBatch();
+    }
+
+    @Override
+    public void apply() throws SQLException {
+        preparedStatement.executeBatch();
+    }
+
+    @Override
+    public void close() {
+        try {
+            preparedStatement.close();
+        } catch (Throwable ignore) {
+            // todo:
+        }
+    }
 }

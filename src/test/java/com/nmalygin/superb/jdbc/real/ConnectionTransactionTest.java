@@ -24,12 +24,8 @@
 
 package com.nmalygin.superb.jdbc.real;
 
-import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
 import com.nmalygin.superb.jdbc.api.Transaction;
-import com.nmalygin.superb.jdbc.real.testdb.Car;
-import com.nmalygin.superb.jdbc.real.testdb.CarsDB;
-import com.nmalygin.superb.jdbc.real.testdb.ConnectionCarsTable;
-import com.nmalygin.superb.jdbc.real.testdb.DataSourceCarsTable;
+import com.nmalygin.superb.jdbc.real.testdb.*;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
