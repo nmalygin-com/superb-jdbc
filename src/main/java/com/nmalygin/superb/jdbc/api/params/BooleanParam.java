@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real.params;
+package com.nmalygin.superb.jdbc.api.params;
 
 import com.nmalygin.superb.jdbc.api.Param;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public final class BytesParam implements Param {
+public final class BooleanParam implements Param {
 
-    private final byte[] param;
+    private final boolean param;
 
-    public BytesParam(byte[] param) {
+    public BooleanParam(boolean param) {
         this.param = param;
     }
 
     @Override
     public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
-        preparedStatement.setBytes(parameterIndex, param);
+        preparedStatement.setBoolean(parameterIndex, param);
     }
 }

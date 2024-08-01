@@ -22,23 +22,28 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real.params;
+package com.nmalygin.superb.jdbc.api.handlers;
 
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.ResultSetHandler;
 
-import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-public final class BooleanParam implements Param {
-
-    private final boolean param;
-
-    public BooleanParam(boolean param) {
-        this.param = param;
-    }
-
+public class SystemOutHandler implements ResultSetHandler<Void> {
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
-        preparedStatement.setBoolean(parameterIndex, param);
+    public Void handle(ResultSet resultSet) throws SQLException {
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+        int columnsNumber = rsmd.getColumnCount();
+        while (resultSet.next()) {
+            for (int i = 1; i <= columnsNumber; i++) {
+                if (i > 1) System.out.print("  |  ");
+                String columnValue = resultSet.getString(i);
+                System.out.print(columnValue);
+            }
+            System.out.println();
+        }
+
+        return null;
     }
 }

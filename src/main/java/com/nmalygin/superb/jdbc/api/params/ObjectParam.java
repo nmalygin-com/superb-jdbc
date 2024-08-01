@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real.params;
+package com.nmalygin.superb.jdbc.api.params;
 
 import com.nmalygin.superb.jdbc.api.Param;
 

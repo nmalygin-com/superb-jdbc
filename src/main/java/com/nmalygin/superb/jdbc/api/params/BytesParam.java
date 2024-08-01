@@ -22,28 +22,23 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real.handlers;
+package com.nmalygin.superb.jdbc.api.params;
 
-import com.nmalygin.superb.jdbc.api.ResultSetHandler;
+import com.nmalygin.superb.jdbc.api.Param;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class SystemOutHandler implements ResultSetHandler<Void> {
-    @Override
-    public Void handle(ResultSet resultSet) throws SQLException {
-        ResultSetMetaData rsmd = resultSet.getMetaData();
-        int columnsNumber = rsmd.getColumnCount();
-        while (resultSet.next()) {
-            for (int i = 1; i <= columnsNumber; i++) {
-                if (i > 1) System.out.print("  |  ");
-                String columnValue = resultSet.getString(i);
-                System.out.print(columnValue);
-            }
-            System.out.println();
-        }
+public final class BytesParam implements Param {
 
-        return null;
+    private final byte[] param;
+
+    public BytesParam(byte[] param) {
+        this.param = param;
+    }
+
+    @Override
+    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+        preparedStatement.setBytes(parameterIndex, param);
     }
 }

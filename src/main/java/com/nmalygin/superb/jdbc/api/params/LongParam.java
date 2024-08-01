@@ -22,30 +22,23 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real.handlers;
+package com.nmalygin.superb.jdbc.api.params;
 
-import com.nmalygin.superb.jdbc.api.ResultSetHandler;
+import com.nmalygin.superb.jdbc.api.Param;
 
-import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class StringListHandler implements ResultSetHandler<List<String>> {
+public final class LongParam implements Param {
 
-    private final String field;
+    private final long param;
 
-    public StringListHandler(String field) {
-        this.field = field;
+    public LongParam(long param) {
+        this.param = param;
     }
 
     @Override
-    public List<String> handle(ResultSet resultSet) throws SQLException {
-        final List<String> list = new ArrayList<>();
-        while (resultSet.next()) {
-            list.add(resultSet.getString(field));
-        }
-
-        return list;
+    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+        preparedStatement.setLong(parameterIndex, param);
     }
 }

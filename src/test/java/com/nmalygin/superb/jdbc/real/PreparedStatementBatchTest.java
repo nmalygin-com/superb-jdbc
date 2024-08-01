@@ -25,8 +25,8 @@
 package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.api.Batch;
-import com.nmalygin.superb.jdbc.real.params.ObjectParam;
-import com.nmalygin.superb.jdbc.real.params.StringParam;
+import com.nmalygin.superb.jdbc.api.params.ObjectParam;
+import com.nmalygin.superb.jdbc.api.params.StringParam;
 import com.nmalygin.superb.jdbc.real.testdb.Book;
 import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
 import com.nmalygin.superb.jdbc.real.testdb.DataSourceBooksTable;

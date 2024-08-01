@@ -22,23 +22,30 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real.params;
+package com.nmalygin.superb.jdbc.api.handlers;
 
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.ResultSetHandler;
 
-import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public final class FloatParam implements Param {
+public class StringListHandler implements ResultSetHandler<List<String>> {
 
-    private final float param;
+    private final String field;
 
-    public FloatParam(float param) {
-        this.param = param;
+    public StringListHandler(String field) {
+        this.field = field;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
-        preparedStatement.setFloat(parameterIndex, param);
+    public List<String> handle(ResultSet resultSet) throws SQLException {
+        final List<String> list = new ArrayList<>();
+        while (resultSet.next()) {
+            list.add(resultSet.getString(field));
+        }
+
+        return list;
     }
 }

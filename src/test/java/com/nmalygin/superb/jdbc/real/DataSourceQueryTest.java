@@ -25,8 +25,8 @@
 package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
-import com.nmalygin.superb.jdbc.real.handlers.StringListHandler;
-import com.nmalygin.superb.jdbc.real.params.StringParam;
+import com.nmalygin.superb.jdbc.api.handlers.StringListHandler;
+import com.nmalygin.superb.jdbc.api.params.StringParam;
 import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
 import com.nmalygin.superb.jdbc.real.testdb.BooksTable;
 import com.nmalygin.superb.jdbc.real.testdb.DataSourceBooksTable;

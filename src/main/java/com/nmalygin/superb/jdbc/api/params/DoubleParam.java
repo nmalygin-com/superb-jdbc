@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real.params;
+package com.nmalygin.superb.jdbc.api.params;
 
 import com.nmalygin.superb.jdbc.api.Param;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public final class IntParam implements Param {
+public final class DoubleParam implements Param {
 
-    private final int param;
+    private final double param;
 
-    public IntParam(int param) {
+    public DoubleParam(double param) {
         this.param = param;
     }
 
     @Override
     public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
-        preparedStatement.setInt(parameterIndex, param);
+        preparedStatement.setDouble(parameterIndex, param);
     }
 }
