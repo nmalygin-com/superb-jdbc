@@ -24,24 +24,43 @@
 
 package com.nmalygin.superb.jdbc.real.testdb;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-final class FromResultSetCar implements Car {
-    private final UUID id;
-    private final String name;
+public class ConnectionBooksTable implements BooksTable {
 
-    FromResultSetCar(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getObject("id", UUID.class);
-        this.name = resultSet.getString("name");
+    private final Connection connection;
+
+    public ConnectionBooksTable(Connection connection) {
+        this.connection = connection;
     }
 
-    public UUID id() {
-        return id;
+    @Override
+    public void insert(UUID id, String title) throws SQLException {
+        final String sql = "INSERT INTO books (id, title) VALUES (?, ?)";
+        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setObject(1, id);
+            preparedStatement.setString(2, title);
+            preparedStatement.executeUpdate();
+        }
     }
 
-    public String name() {
-        return name;
+    @Override
+    public List<Book> books() throws SQLException {
+        final String sql = "SELECT id, title FROM books";
+        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            final List<Book> books = new ArrayList<>();
+            while (resultSet.next()) {
+                books.add(new FromResultSetBook(resultSet));
+            }
+
+            return books;
+        }
     }
 }

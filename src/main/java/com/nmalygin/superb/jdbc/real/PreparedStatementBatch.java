@@ -34,7 +34,7 @@ final class PreparedStatementBatch implements Batch {
 
     private final PreparedStatement preparedStatement;
 
-    public PreparedStatementBatch(PreparedStatement preparedStatement) {
+    PreparedStatementBatch(PreparedStatement preparedStatement) {
         this.preparedStatement = preparedStatement;
     }
 
@@ -57,7 +57,7 @@ final class PreparedStatementBatch implements Batch {
         try {
             preparedStatement.close();
         } catch (Throwable ignore) {
-            // todo:
+
         }
     }
 }

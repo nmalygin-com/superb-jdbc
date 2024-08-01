@@ -40,102 +40,102 @@ class ConnectionTransactionTest {
     @Test
     void noCommittedTransaction() throws SQLException {
         final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
+        new LibraryDB(dataSource).init();
         final UUID id = UUID.randomUUID();
-        final String name = "Toyota";
+        final String title = "Clean Code";
 
         try (final Connection connection = dataSource.getConnection();
              final Transaction transaction = new ConnectionTransaction(connection)) {
             connection.setAutoCommit(false);
             transaction
-                    .change("INSERT INTO cars (id, name) VALUES ('" + id + "', '" + name + "')")
+                    .change("INSERT INTO books (id, title) VALUES ('" + id + "', '" + title + "')")
                     .apply();
         }
 
-        final List<Car> cars = new DataSourceCarsTable(dataSource).cars();
-        assertEquals(0, cars.size());
+        final List<Book> books = new DataSourceBooksTable(dataSource).books();
+        assertEquals(0, books.size());
     }
 
     @Test
     void committedTransaction() throws SQLException {
         final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
+        new LibraryDB(dataSource).init();
         final UUID id = UUID.randomUUID();
-        final String name = "Toyota";
+        final String title = "Clean Code";
 
         try (final Connection connection = dataSource.getConnection();
              final Transaction transaction = new ConnectionTransaction(connection)) {
             connection.setAutoCommit(false);
             transaction
-                    .change("INSERT INTO cars (id, name) VALUES ('" + id + "', '" + name + "')")
+                    .change("INSERT INTO books (id, title) VALUES ('" + id + "', '" + title + "')")
                     .apply();
 
-            final List<Car> cars = new DataSourceCarsTable(dataSource).cars();
-            assertEquals(0, cars.size());
+            final List<Book> books = new DataSourceBooksTable(dataSource).books();
+            assertEquals(0, books.size());
 
             transaction.commit();
         }
 
-        final List<Car> cars = new DataSourceCarsTable(dataSource).cars();
-        assertEquals(1, cars.size());
-        assertEquals(id, cars.get(0).id());
-        assertEquals(name, cars.get(0).name());
+        final List<Book> books = new DataSourceBooksTable(dataSource).books();
+        assertEquals(1, books.size());
+        assertEquals(id, books.get(0).id());
+        assertEquals(title, books.get(0).title());
     }
 
     @Test
     void rollback() throws SQLException {
         final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
+        new LibraryDB(dataSource).init();
         final UUID id = UUID.randomUUID();
-        final String name = "Toyota";
+        final String title = "Clean Code";
 
         try (final Connection connection = dataSource.getConnection();
              final Transaction transaction = new ConnectionTransaction(connection)) {
             connection.setAutoCommit(false);
 
             transaction
-                    .change("INSERT INTO cars (id, name) VALUES ('" + id + "', '" + name + "')")
+                    .change("INSERT INTO books (id, title) VALUES ('" + id + "', '" + title + "')")
                     .apply();
 
-            assertEquals(1, new ConnectionCarsTable(connection).cars().size());
+            assertEquals(1, new ConnectionBooksTable(connection).books().size());
             transaction.rollback();
-            assertEquals(0, new ConnectionCarsTable(connection).cars().size());
+            assertEquals(0, new ConnectionBooksTable(connection).books().size());
         }
     }
 
     @Test
     void savepointAndRollbackTo() throws SQLException {
         final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
+        new LibraryDB(dataSource).init();
 
         try (final Connection connection = dataSource.getConnection();
              final Transaction transaction = new ConnectionTransaction(connection)) {
             connection.setAutoCommit(false);
 
             transaction
-                    .change("INSERT INTO cars (id, name) VALUES ('" + UUID.randomUUID() + "', 'Toyota')")
+                    .change("INSERT INTO books (id, title) VALUES ('" + UUID.randomUUID() + "', 'Clean Code')")
                     .apply();
 
-            assertEquals(1, new ConnectionCarsTable(connection).cars().size());
+            assertEquals(1, new ConnectionBooksTable(connection).books().size());
 
             transaction.setSavepoint("sp-1");
 
             transaction
-                    .change("INSERT INTO cars (id, name) VALUES ('" + UUID.randomUUID() + "', 'Ford')")
+                    .change("INSERT INTO books (id, title) VALUES ('" + UUID.randomUUID() + "', 'Code Complete')")
                     .apply();
 
-            assertEquals(2, new ConnectionCarsTable(connection).cars().size());
+            assertEquals(2, new ConnectionBooksTable(connection).books().size());
 
             transaction.rollbackTo("sp-1");
 
-            assertEquals(1, new ConnectionCarsTable(connection).cars().size());
+            assertEquals(1, new ConnectionBooksTable(connection).books().size());
         }
     }
 
     @Test
     void close() throws SQLException {
         final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
+        new LibraryDB(dataSource).init();
 
         try (final Connection connection = dataSource.getConnection();
              final Transaction transaction = new ConnectionTransaction(connection)) {

@@ -24,11 +24,9 @@
 
 package com.nmalygin.superb.jdbc.real.testdb;
 
-import java.sql.SQLException;
-import java.util.List;
 import java.util.UUID;
 
-public interface CarsTable {
-    void insert(UUID id, String name) throws SQLException;
-    List<Car> cars() throws SQLException;
+public interface Book {
+    UUID id();
+    String title();
 }

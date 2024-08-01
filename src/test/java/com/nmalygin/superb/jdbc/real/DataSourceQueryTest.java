@@ -27,9 +27,9 @@ package com.nmalygin.superb.jdbc.real;
 import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
 import com.nmalygin.superb.jdbc.real.handlers.StringListHandler;
 import com.nmalygin.superb.jdbc.real.params.StringParam;
-import com.nmalygin.superb.jdbc.real.testdb.CarsDB;
-import com.nmalygin.superb.jdbc.real.testdb.CarsTable;
-import com.nmalygin.superb.jdbc.real.testdb.DataSourceCarsTable;
+import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
+import com.nmalygin.superb.jdbc.real.testdb.BooksTable;
+import com.nmalygin.superb.jdbc.real.testdb.DataSourceBooksTable;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
@@ -45,48 +45,50 @@ final class DataSourceQueryTest {
     @Test
     void simpleQuery() throws SQLException {
         final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
-        final CarsTable carsTable = new DataSourceCarsTable(dataSource);
-        carsTable.insert(UUID.randomUUID(), "Toyota");
+        new LibraryDB(dataSource).init();
+        final BooksTable booksTable = new DataSourceBooksTable(dataSource);
+        final String title = "Clean Code";
 
-        final List<String> names = new DataSourceQuery(dataSource, "SELECT name FROM cars")
-                .executeWith(new StringListHandler("name"));
+        booksTable.insert(UUID.randomUUID(), title);
 
-        assertEquals(1, names.size());
-        assertTrue(names.contains("Toyota"));
+        final List<String> titles = new DataSourceQuery(dataSource, "SELECT title FROM books")
+                .executeWith(new StringListHandler("title"));
+
+        assertEquals(1, titles.size());
+        assertTrue(titles.contains(title));
     }
 
     @Test
     void withParamsQuery() throws SQLException {
         final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
-        final CarsTable carsTable = new DataSourceCarsTable(dataSource);
-        carsTable.insert(UUID.randomUUID(), "Toyota");
-        carsTable.insert(UUID.randomUUID(), "Ford");
+        new LibraryDB(dataSource).init();
+        final BooksTable booksTable = new DataSourceBooksTable(dataSource);
+        booksTable.insert(UUID.randomUUID(), "Clean Code");
+        booksTable.insert(UUID.randomUUID(), "Code Complete");
 
-        final List<String> names = new DataSourceQuery(dataSource,
-                "SELECT name FROM cars WHERE name = ?",
-                new StringParam("Toyota"))
-                .executeWith(new StringListHandler("name"));
+        final List<String> titles = new DataSourceQuery(dataSource,
+                "SELECT title FROM books WHERE title = ?",
+                new StringParam("Clean Code"))
+                .executeWith(new StringListHandler("title"));
 
-        assertEquals(1, names.size());
-        assertTrue(names.contains("Toyota"));
+        assertEquals(1, titles.size());
+        assertTrue(titles.contains("Clean Code"));
     }
 
     @Test
     void buildQuery() throws SQLException {
         final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
-        final CarsTable carsTable = new DataSourceCarsTable(dataSource);
-        carsTable.insert(UUID.randomUUID(), "Toyota");
-        carsTable.insert(UUID.randomUUID(), "Ford");
+        new LibraryDB(dataSource).init();
+        final BooksTable booksTable = new DataSourceBooksTable(dataSource);
+        booksTable.insert(UUID.randomUUID(), "Clean Code");
+        booksTable.insert(UUID.randomUUID(), "Code Complete");
 
-        final List<String> names = new DataSourceQuery(dataSource,
-                "SELECT name FROM cars ")
-                .append("ORDER BY name")
-                .executeWith(new StringListHandler("name"));
+        final List<String> titles = new DataSourceQuery(dataSource,
+                "SELECT title FROM books ")
+                .append("ORDER BY title")
+                .executeWith(new StringListHandler("title"));
 
-        assertEquals(2, names.size());
-        assertEquals("Ford", names.get(0));
+        assertEquals(2, titles.size());
+        assertEquals("Clean Code", titles.get(0));
     }
 }

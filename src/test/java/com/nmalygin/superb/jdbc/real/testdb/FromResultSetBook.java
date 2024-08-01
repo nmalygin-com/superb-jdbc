@@ -24,9 +24,24 @@
 
 package com.nmalygin.superb.jdbc.real.testdb;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 
-public interface Car {
-    UUID id();
-    String name();
+final class FromResultSetBook implements Book {
+    private final UUID id;
+    private final String title;
+
+    FromResultSetBook(ResultSet resultSet) throws SQLException {
+        this.id = resultSet.getObject("id", UUID.class);
+        this.title = resultSet.getString("title");
+    }
+
+    public UUID id() {
+        return id;
+    }
+
+    public String title() {
+        return title;
+    }
 }

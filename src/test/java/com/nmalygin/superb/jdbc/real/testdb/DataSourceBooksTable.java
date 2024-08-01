@@ -33,35 +33,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-final public class DataSourceCarsTable implements CarsTable {
+final public class DataSourceBooksTable implements BooksTable {
 
     private final DataSource dataSource;
 
-    public DataSourceCarsTable(DataSource dataSource) {
+    public DataSourceBooksTable(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public void insert(UUID id, String name) throws SQLException {
-        final String sql = "INSERT INTO cars (id, name) VALUES (?, ?)";
+    public void insert(UUID id, String title) throws SQLException {
+        final String sql = "INSERT INTO books (id, title) VALUES (?, ?)";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, id);
-            preparedStatement.setString(2, name);
+            preparedStatement.setString(2, title);
             preparedStatement.executeUpdate();
         }
     }
 
-    public List<Car> cars() throws SQLException {
-        final String sql = "SELECT id, name FROM cars";
+    public List<Book> books() throws SQLException {
+        final String sql = "SELECT id, title FROM books";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-            final List<Car> cars = new ArrayList<>();
+            final List<Book> books = new ArrayList<>();
             while (resultSet.next()) {
-                cars.add(new FromResultSetCar(resultSet));
+                books.add(new FromResultSetBook(resultSet));
             }
 
-            return cars;
+            return books;
         }
     }
 }

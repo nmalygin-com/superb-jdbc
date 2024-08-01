@@ -29,21 +29,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-final public class CarsDB {
+final public class LibraryDB {
 
     private final DataSource dataSource;
 
-    public CarsDB(DataSource dataSource) {
+    public LibraryDB(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     public void init() throws SQLException {
         String sql =
-                "CREATE TABLE cars " +
-                        "(id UUID," +
-                        "name VARCHAR NOT NULL, " +
-                        "PRIMARY KEY (id)" +
-                        ")";
+                "CREATE TABLE books " +
+                "(id UUID," +
+                "title VARCHAR NOT NULL, " +
+                "PRIMARY KEY (id)" +
+                ")";
 
         try (final Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

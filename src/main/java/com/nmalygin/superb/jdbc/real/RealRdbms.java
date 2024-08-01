@@ -51,8 +51,20 @@ public final class RealRdbms implements Rdbms {
 
     @Override
     public Batch batch(String sql) throws SQLException {
-        Connection connection = dataSource.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        final Connection connection = dataSource.getConnection();
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+        } catch (Throwable t) {
+            try {
+                connection.close();
+            } catch (Throwable ignore) {
+
+            }
+
+            throw t;
+        }
 
         return new ConnectionBatch(connection, new PreparedStatementBatch(preparedStatement));
     }
@@ -64,7 +76,12 @@ public final class RealRdbms implements Rdbms {
         try {
             connection.setAutoCommit(false);
         } catch (Throwable t) {
-            connection.close();
+            try {
+                connection.close();
+            } catch (Throwable ignore) {
+
+            }
+
             throw t;
         }
 
@@ -79,7 +96,7 @@ public final class RealRdbms implements Rdbms {
             connection.setAutoCommit(false);
         } catch (Throwable t) {
             try {
-               connection.setAutoCommit(true);
+                connection.setAutoCommit(true);
             } catch (Throwable ignore) {
             }
 

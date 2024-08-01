@@ -26,9 +26,9 @@ package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
 import com.nmalygin.superb.jdbc.real.handlers.StringListHandler;
-import com.nmalygin.superb.jdbc.real.testdb.CarsDB;
-import com.nmalygin.superb.jdbc.real.testdb.CarsTable;
-import com.nmalygin.superb.jdbc.real.testdb.DataSourceCarsTable;
+import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
+import com.nmalygin.superb.jdbc.real.testdb.BooksTable;
+import com.nmalygin.superb.jdbc.real.testdb.DataSourceBooksTable;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
@@ -43,16 +43,18 @@ class ConnectionQueryTest {
     @Test
     void simpleInsert() throws SQLException {
         final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
-        final CarsTable carsTable = new DataSourceCarsTable(dataSource);
-        carsTable.insert(UUID.randomUUID(), "Toyota");
+        new LibraryDB(dataSource).init();
+        final BooksTable booksTable = new DataSourceBooksTable(dataSource);
+        final String title = "Clean Code";
+
+        booksTable.insert(UUID.randomUUID(), title);
 
         try (final Connection connection = dataSource.getConnection()) {
-            final List<String> names = new ConnectionQuery(connection, "SELECT name FROM cars")
-                    .executeWith(new StringListHandler("name"));
+            final List<String> names = new ConnectionQuery(connection, "SELECT title FROM books")
+                    .executeWith(new StringListHandler("title"));
 
             assertEquals(1, names.size());
-            assertTrue(names.contains("Toyota"));
+            assertTrue(names.contains(title));
         }
     }
 }

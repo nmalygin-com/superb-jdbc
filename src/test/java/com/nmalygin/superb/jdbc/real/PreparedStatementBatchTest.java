@@ -25,18 +25,16 @@
 package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.api.Batch;
-import com.nmalygin.superb.jdbc.api.Transaction;
 import com.nmalygin.superb.jdbc.real.params.ObjectParam;
 import com.nmalygin.superb.jdbc.real.params.StringParam;
-import com.nmalygin.superb.jdbc.real.testdb.Car;
-import com.nmalygin.superb.jdbc.real.testdb.CarsDB;
-import com.nmalygin.superb.jdbc.real.testdb.DataSourceCarsTable;
+import com.nmalygin.superb.jdbc.real.testdb.Book;
+import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
+import com.nmalygin.superb.jdbc.real.testdb.DataSourceBooksTable;
 import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
@@ -47,19 +45,19 @@ class PreparedStatementBatchTest {
     @Test
     void succesBatch() throws SQLException {
         final DataSource dataSource = new H2DataSource();
-        new CarsDB(dataSource).init();
+        new LibraryDB(dataSource).init();
 
-        final String sql = "INSERT INTO cars(id, name) VALUES (?, ?)";
+        final String sql = "INSERT INTO books(id, title) VALUES (?, ?)";
 
         try (Connection connection = dataSource.getConnection();
              Batch batch = new PreparedStatementBatch(connection.prepareStatement(sql))) {
-            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Toyota"));
-            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Mazda"));
-            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Ford"));
+            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Clean Code"));
+            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Code Complete"));
+            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Effective Java"));
             batch.apply();
         }
 
-        final List<Car> cars = new DataSourceCarsTable(dataSource).cars();
-        assertEquals(3, cars.size());
+        final List<Book> books = new DataSourceBooksTable(dataSource).books();
+        assertEquals(3, books.size());
     }
 }
