@@ -17,22 +17,28 @@
 <dependency>
    <groupId>com.nmalygin</groupId>
    <artifactId>superb-jdbc</artifactId>
-   <version>0.0.3</version>
+   <version>0.0.4</version>
 </dependency>
 ```
 
 2. Create a rdbms object
 ```java
-Dbms rdbms = new RealDbms(/* your datasource */);
+RDbms rdbms = new RealRDbms(/* your datasource */);
 ```
 
 3. Use the rdbms object
 ```java
-List<String> names = rdbms
-        .query("SELECT name FROM names")
-        .execute(new StringListHandler("name"));
+List<String> titles = rdbms
+        .query("SELECT title FROM books")
+        .executeWith(new StringListHandler("title"));
 ```
 
+## Use cases
 
+### Simple - select
 
-
+```java
+List<String> titles = rdbms
+        .query("SELECT title FROM books")
+        .executeWith(new StringListHandler("title"));
+```
