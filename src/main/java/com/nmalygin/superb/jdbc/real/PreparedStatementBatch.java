@@ -53,11 +53,7 @@ final class PreparedStatementBatch implements Batch {
     }
 
     @Override
-    public void close() {
-        try {
-            preparedStatement.close();
-        } catch (Throwable ignore) {
-
-        }
+    public void close() throws SQLException {
+        preparedStatement.close();
     }
 }

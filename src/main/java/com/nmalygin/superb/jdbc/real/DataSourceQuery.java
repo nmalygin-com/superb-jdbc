@@ -57,10 +57,10 @@ final class DataSourceQuery implements Query {
 
     @Override
     public <R> R executeWith(ResultSetHandler<R> withHandler) throws SQLException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement preparedStatement = connection.prepareStatement(sql.parameterizedSql())) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql.parameterizedSql())) {
             sql.fill(preparedStatement);
-            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return withHandler.handle(resultSet);
             }
         }

@@ -60,7 +60,7 @@ public final class RealRdbms implements Rdbms {
             try {
                 connection.close();
             } catch (Throwable ignore) {
-
+                throw t;
             }
 
             throw t;
@@ -79,7 +79,7 @@ public final class RealRdbms implements Rdbms {
             try {
                 connection.close();
             } catch (Throwable ignore) {
-
+                throw t;
             }
 
             throw t;
@@ -96,13 +96,9 @@ public final class RealRdbms implements Rdbms {
             connection.setAutoCommit(false);
         } catch (Throwable t) {
             try {
-                connection.setAutoCommit(true);
-            } catch (Throwable ignore) {
-            }
-
-            try {
                 connection.close();
             } catch (Throwable ignore) {
+                throw t;
             }
 
             throw t;

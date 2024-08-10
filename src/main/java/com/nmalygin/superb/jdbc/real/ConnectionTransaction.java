@@ -88,12 +88,9 @@ final class ConnectionTransaction implements Transaction {
     }
 
     @Override
-    public void close() {
+    public void close() throws SQLException {
         if (connection != null) {
-            try {
-                connection.close();
-            } catch (Throwable ignore) {
-            }
+            connection.close();
         }
     }
 }

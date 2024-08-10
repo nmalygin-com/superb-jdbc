@@ -48,7 +48,7 @@ final class DataSourceChange implements Change {
 
     @Override
     public void apply() throws SQLException {
-        try (final Connection connection = dataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql.parameterizedSql())) {
             sql.fill(preparedStatement);
 

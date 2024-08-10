@@ -54,9 +54,9 @@ final class ConnectionQuery implements Query {
 
     @Override
     public <R> R executeWith(ResultSetHandler<R> withHandler) throws SQLException {
-        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql.parameterizedSql())) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql.parameterizedSql())) {
             sql.fill(preparedStatement);
-            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return withHandler.handle(resultSet);
             }
         }
