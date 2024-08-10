@@ -26,7 +26,7 @@ package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.api.Rdbms;
 import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
-import com.nmalygin.superb.jdbc.api.handlers.StringListHandler;
+import com.nmalygin.superb.jdbc.api.handlers.ColumnToStringList;
 
 import javax.sql.DataSource;
 
@@ -40,6 +40,6 @@ class RealDbmsTest {
 
         List<String> names = rdbms
                 .query("SELECT name FROM names")
-                .executeWith(new StringListHandler("name"));
+                .executeWith(new ColumnToStringList("name"));
     }
 }

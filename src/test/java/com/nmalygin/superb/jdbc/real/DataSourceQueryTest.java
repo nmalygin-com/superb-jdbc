@@ -25,7 +25,7 @@
 package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
-import com.nmalygin.superb.jdbc.api.handlers.StringListHandler;
+import com.nmalygin.superb.jdbc.api.handlers.ColumnToStringList;
 import com.nmalygin.superb.jdbc.api.params.StringParam;
 import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
 import com.nmalygin.superb.jdbc.real.testdb.BooksTable;
@@ -52,7 +52,7 @@ final class DataSourceQueryTest {
         booksTable.insert(UUID.randomUUID(), title);
 
         final List<String> titles = new DataSourceQuery(dataSource, "SELECT title FROM books")
-                .executeWith(new StringListHandler("title"));
+                .executeWith(new ColumnToStringList("title"));
 
         assertEquals(1, titles.size());
         assertTrue(titles.contains(title));
@@ -69,7 +69,7 @@ final class DataSourceQueryTest {
         final List<String> titles = new DataSourceQuery(dataSource,
                 "SELECT title FROM books WHERE title = ?",
                 new StringParam("Clean Code"))
-                .executeWith(new StringListHandler("title"));
+                .executeWith(new ColumnToStringList("title"));
 
         assertEquals(1, titles.size());
         assertTrue(titles.contains("Clean Code"));
@@ -86,7 +86,7 @@ final class DataSourceQueryTest {
         final List<String> titles = new DataSourceQuery(dataSource,
                 "SELECT title FROM books ")
                 .append("ORDER BY title")
-                .executeWith(new StringListHandler("title"));
+                .executeWith(new ColumnToStringList("title"));
 
         assertEquals(2, titles.size());
         assertEquals("Clean Code", titles.get(0));

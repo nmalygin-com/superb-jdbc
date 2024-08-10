@@ -31,11 +31,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringListHandler implements ResultSetHandler<List<String>> {
+public class ColumnToStringList implements ResultSetHandler<List<String>> {
 
     private final String field;
 
-    public StringListHandler(String field) {
+    public ColumnToStringList(String field) {
         this.field = field;
     }
 
