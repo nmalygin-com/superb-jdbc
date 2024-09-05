@@ -33,12 +33,12 @@ public final class IntParam implements Param {
 
     private final int param;
 
-    public IntParam(int param) {
+    public IntParam(final int param) {
         this.param = param;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setInt(parameterIndex, param);
     }
 }

@@ -41,7 +41,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PreparedStatementBatchTest {
+class ClosingPreparedStatementBatchTest {
     @Test
     void succesBatch() throws SQLException {
         final DataSource dataSource = new H2DataSource();
@@ -50,7 +50,7 @@ class PreparedStatementBatchTest {
         final String sql = "INSERT INTO books(id, title) VALUES (?, ?)";
 
         try (Connection connection = dataSource.getConnection();
-             Batch batch = new PreparedStatementBatch(connection.prepareStatement(sql))) {
+             Batch batch = new ClosingPreparedStatementBatch(connection.prepareStatement(sql))) {
             batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Clean Code"));
             batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Code Complete"));
             batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Effective Java"));

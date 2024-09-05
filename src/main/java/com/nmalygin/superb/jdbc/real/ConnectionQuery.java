@@ -37,23 +37,23 @@ final class ConnectionQuery implements Query {
     private final Connection connection;
     private final Sql sql;
 
-    ConnectionQuery(Connection connection, Sql sql) {
+    ConnectionQuery(final Connection connection, final Sql sql) {
         this.connection = connection;
         this.sql = sql;
     }
 
-    ConnectionQuery(Connection connection, String sqlFragment, Param... withParams) {
+    ConnectionQuery(final Connection connection, final String sqlFragment, final Param... withParams) {
         this(connection, new NotThreadSafeSql(sqlFragment, withParams));
     }
 
     @Override
-    public Query append(String sqlFragment, Param... withParams) {
+    public Query append(final String sqlFragment, final Param... withParams) {
         sql.append(sqlFragment, withParams);
         return this;
     }
 
     @Override
-    public <R> R executeWith(ResultSetHandler<R> withHandler) throws SQLException {
+    public <R> R executeWith(final ResultSetHandler<R> withHandler) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql.parameterizedSql())) {
             sql.fill(preparedStatement);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {

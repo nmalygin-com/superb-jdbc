@@ -38,25 +38,25 @@ final class ConnectionTransaction implements Transaction {
     private final Connection connection;
     private final Map<String, Savepoint> savePoints = new HashMap<>();
 
-    ConnectionTransaction(Connection connection) {
+    ConnectionTransaction(final Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public Query query(String sql, Param... withParams) {
+    public Query query(final String sql, final Param... withParams) {
         return new ConnectionQuery(connection, sql, withParams);
     }
 
     @Override
-    public Change change(String sql, Param... withParams) {
+    public Change change(final String sql, final Param... withParams) {
         return new ConnectionChange(connection, sql, withParams);
     }
 
     @Override
-    public Batch batch(String sql) throws SQLException {
+    public Batch batch(final String sql) throws SQLException {
         final PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-        return new PreparedStatementBatch(preparedStatement);
+        return new ClosingPreparedStatementBatch(preparedStatement);
     }
 
     @Override
@@ -65,7 +65,7 @@ final class ConnectionTransaction implements Transaction {
     }
 
     @Override
-    public void setSavepoint(String withName) throws SQLException {
+    public void setSavepoint(final String withName) throws SQLException {
         if (savePoints.containsKey(withName)) {
             throw new IllegalArgumentException("Savepoint with name: " + withName + " already exists.");
         }
@@ -79,7 +79,7 @@ final class ConnectionTransaction implements Transaction {
     }
 
     @Override
-    public void rollbackTo(String savepointWithName) throws SQLException {
+    public void rollbackTo(final String savepointWithName) throws SQLException {
         if (!savePoints.containsKey(savepointWithName)) {
             throw new IllegalArgumentException("Savepoint with name: " + savepointWithName + " not found.");
         }

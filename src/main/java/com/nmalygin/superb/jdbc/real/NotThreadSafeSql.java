@@ -37,17 +37,17 @@ final class NotThreadSafeSql implements Sql {
     private final StringBuilder stringBuilder;
     private final List<Param> params;
 
-    NotThreadSafeSql(StringBuilder stringBuilder, List<Param> params) {
+    NotThreadSafeSql(final StringBuilder stringBuilder, final List<Param> params) {
         this.stringBuilder = stringBuilder;
         this.params = params;
     }
 
-    NotThreadSafeSql(String sqlFragment, Param... withParams) {
+    NotThreadSafeSql(final String sqlFragment, final Param... withParams) {
         this(new StringBuilder(sqlFragment), new ArrayList<>(Arrays.asList(withParams)));
     }
 
     @Override
-    public void append(String sqlFragment, Param... withParams) {
+    public void append(final String sqlFragment, final Param... withParams) {
         stringBuilder.append(sqlFragment);
         params.addAll(Arrays.asList(withParams));
     }
@@ -58,10 +58,10 @@ final class NotThreadSafeSql implements Sql {
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement) throws SQLException {
-        int i = 1;
-        for (Param param : params) {
-            param.fill(preparedStatement, i++);
+    public void fill(final PreparedStatement preparedStatement) throws SQLException {
+        int index = 1;
+        for (final Param param : params) {
+            param.fill(preparedStatement, index++);
         }
     }
 }

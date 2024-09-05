@@ -33,12 +33,12 @@ public class StringParam implements Param {
 
     private final String param;
 
-    public StringParam(String param) {
+    public StringParam(final String param) {
         this.param = param;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setString(parameterIndex, param);
     }
 }

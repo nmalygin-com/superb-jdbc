@@ -33,12 +33,12 @@ public final class ObjectParam implements Param {
 
     private final Object param;
 
-    public ObjectParam(Object param) {
+    public ObjectParam(final Object param) {
         this.param = param;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setObject(parameterIndex, param);
     }
 }

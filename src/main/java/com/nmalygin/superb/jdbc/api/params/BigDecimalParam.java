@@ -34,12 +34,12 @@ public final class BigDecimalParam implements Param {
 
     private final BigDecimal param;
 
-    public BigDecimalParam(BigDecimal param) {
+    public BigDecimalParam(final BigDecimal param) {
         this.param = param;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setBigDecimal(parameterIndex, param);
     }
 }

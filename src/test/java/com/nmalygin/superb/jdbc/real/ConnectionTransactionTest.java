@@ -44,8 +44,8 @@ class ConnectionTransactionTest {
         final UUID id = UUID.randomUUID();
         final String title = "Clean Code";
 
-        try (final Connection connection = dataSource.getConnection();
-             final Transaction transaction = new ConnectionTransaction(connection)) {
+        try (Connection connection = dataSource.getConnection();
+             Transaction transaction = new ConnectionTransaction(connection)) {
             connection.setAutoCommit(false);
             transaction
                     .change("INSERT INTO books (id, title) VALUES ('" + id + "', '" + title + "')")
@@ -63,8 +63,8 @@ class ConnectionTransactionTest {
         final UUID id = UUID.randomUUID();
         final String title = "Clean Code";
 
-        try (final Connection connection = dataSource.getConnection();
-             final Transaction transaction = new ConnectionTransaction(connection)) {
+        try (Connection connection = dataSource.getConnection();
+             Transaction transaction = new ConnectionTransaction(connection)) {
             connection.setAutoCommit(false);
             transaction
                     .change("INSERT INTO books (id, title) VALUES ('" + id + "', '" + title + "')")
@@ -89,8 +89,8 @@ class ConnectionTransactionTest {
         final UUID id = UUID.randomUUID();
         final String title = "Clean Code";
 
-        try (final Connection connection = dataSource.getConnection();
-             final Transaction transaction = new ConnectionTransaction(connection)) {
+        try (Connection connection = dataSource.getConnection();
+             Transaction transaction = new ConnectionTransaction(connection)) {
             connection.setAutoCommit(false);
 
             transaction
@@ -108,8 +108,8 @@ class ConnectionTransactionTest {
         final DataSource dataSource = new H2DataSource();
         new LibraryDB(dataSource).init();
 
-        try (final Connection connection = dataSource.getConnection();
-             final Transaction transaction = new ConnectionTransaction(connection)) {
+        try (Connection connection = dataSource.getConnection();
+             Transaction transaction = new ConnectionTransaction(connection)) {
             connection.setAutoCommit(false);
 
             transaction
@@ -137,8 +137,8 @@ class ConnectionTransactionTest {
         final DataSource dataSource = new H2DataSource();
         new LibraryDB(dataSource).init();
 
-        try (final Connection connection = dataSource.getConnection();
-             final Transaction transaction = new ConnectionTransaction(connection)) {
+        try (Connection connection = dataSource.getConnection();
+             Transaction transaction = new ConnectionTransaction(connection)) {
             assertFalse(connection.isClosed());
             transaction.close();
             assertTrue(connection.isClosed());
@@ -149,8 +149,8 @@ class ConnectionTransactionTest {
     void duplicateSavepoint() throws SQLException {
         final DataSource dataSource = new H2DataSource();
 
-        try (final Connection connection = dataSource.getConnection();
-             final Transaction transaction = new ConnectionTransaction(connection)) {
+        try (Connection connection = dataSource.getConnection();
+             Transaction transaction = new ConnectionTransaction(connection)) {
             transaction.setSavepoint("sp");
             assertThrows(IllegalArgumentException.class, () -> transaction.setSavepoint("sp"));
         }

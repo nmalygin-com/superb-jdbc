@@ -49,7 +49,7 @@ class ConnectionQueryTest {
 
         booksTable.insert(UUID.randomUUID(), title);
 
-        try (final Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             final List<String> names = new ConnectionQuery(connection, "SELECT title FROM books")
                     .executeWith(new ColumnToStringList("title"));
 

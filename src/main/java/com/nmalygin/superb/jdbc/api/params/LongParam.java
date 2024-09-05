@@ -33,12 +33,12 @@ public final class LongParam implements Param {
 
     private final long param;
 
-    public LongParam(long param) {
+    public LongParam(final long param) {
         this.param = param;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setLong(parameterIndex, param);
     }
 }

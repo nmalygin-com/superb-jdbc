@@ -29,5 +29,6 @@ import java.sql.SQLException;
 public interface Batch extends AutoCloseable {
     void put(Param... params) throws SQLException;
     void apply() throws SQLException;
+    @Override
     void close() throws SQLException;
 }

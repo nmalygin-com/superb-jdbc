@@ -33,12 +33,12 @@ public final class DoubleParam implements Param {
 
     private final double param;
 
-    public DoubleParam(double param) {
+    public DoubleParam(final double param) {
         this.param = param;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setDouble(parameterIndex, param);
     }
 }

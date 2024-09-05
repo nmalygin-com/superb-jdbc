@@ -24,22 +24,45 @@
 
 package com.nmalygin.superb.jdbc.real;
 
-import com.nmalygin.superb.jdbc.api.Rdbms;
-import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
-import com.nmalygin.superb.jdbc.api.handlers.ColumnToStringList;
+import com.nmalygin.superb.jdbc.api.Batch;
+import com.nmalygin.superb.jdbc.api.Param;
 
-import javax.sql.DataSource;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
-class RealDbmsTest {
-    void test() throws SQLException {
-        DataSource dataSource = new H2DataSource();
-        Rdbms rdbms = new RealRdbms(dataSource);
+final class ClosingConnectionBatch implements Batch {
 
-        List<String> names = rdbms
-                .query("SELECT name FROM names")
-                .executeWith(new ColumnToStringList("name"));
+    private final PreparedStatement preparedStatement;
+
+    ClosingConnectionBatch(final PreparedStatement preparedStatement) {
+        this.preparedStatement = preparedStatement;
+    }
+
+    @Override
+    public void put(final Param... params) throws SQLException {
+        int index = 1;
+        for (final Param param : params) {
+            param.fill(preparedStatement, index++);
+        }
+        preparedStatement.addBatch();
+    }
+
+    @Override
+    public void apply() throws SQLException {
+        preparedStatement.executeBatch();
+    }
+
+    @Override
+    public void close() throws SQLException {
+        final Connection connection = preparedStatement.getConnection();
+        try {
+            preparedStatement.close();
+        } catch (Exception e) {
+            connection.close();
+            throw e;
+        }
+
+        connection.close();
     }
 }

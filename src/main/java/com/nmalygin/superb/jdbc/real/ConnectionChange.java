@@ -36,12 +36,12 @@ final class ConnectionChange implements Change {
     private final Connection connection;
     private final Sql sql;
 
-    ConnectionChange(Connection connection, Sql sql) {
+    ConnectionChange(final Connection connection, final Sql sql) {
         this.connection = connection;
         this.sql = sql;
     }
 
-    ConnectionChange(Connection connection, String sql, Param... withParams) {
+    ConnectionChange(final Connection connection, final String sql, final Param... withParams) {
         this(connection, new NotThreadSafeSql(sql, withParams));
     }
 

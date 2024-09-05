@@ -28,5 +28,5 @@ import java.sql.SQLException;
 
 public interface Transactions {
     Transaction transaction() throws SQLException;
-    Transaction transaction(int withIsolationLevel) throws SQLException;
+    Transaction transaction(int isolationLevel) throws SQLException;
 }

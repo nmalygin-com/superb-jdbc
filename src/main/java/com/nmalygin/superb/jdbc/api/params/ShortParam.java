@@ -33,12 +33,12 @@ public final class ShortParam implements Param {
 
     private final short param;
 
-    public ShortParam(short param) {
+    public ShortParam(final short param) {
         this.param = param;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setShort(parameterIndex, param);
     }
 }

@@ -37,14 +37,14 @@ final public class DataSourceBooksTable implements BooksTable {
 
     private final DataSource dataSource;
 
-    public DataSourceBooksTable(DataSource dataSource) {
+    public DataSourceBooksTable(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public void insert(UUID id, String title) throws SQLException {
+    public void insert(final UUID id, final String title) throws SQLException {
         final String sql = "INSERT INTO books (id, title) VALUES (?, ?)";
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, id);
             preparedStatement.setString(2, title);
             preparedStatement.executeUpdate();
@@ -53,8 +53,8 @@ final public class DataSourceBooksTable implements BooksTable {
 
     public List<Book> books() throws SQLException {
         final String sql = "SELECT id, title FROM books";
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             final List<Book> books = new ArrayList<>();
             while (resultSet.next()) {

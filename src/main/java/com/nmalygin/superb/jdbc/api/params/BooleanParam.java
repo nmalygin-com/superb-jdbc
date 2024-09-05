@@ -33,12 +33,12 @@ public final class BooleanParam implements Param {
 
     private final boolean param;
 
-    public BooleanParam(boolean param) {
+    public BooleanParam(final boolean param) {
         this.param = param;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setBoolean(parameterIndex, param);
     }
 }

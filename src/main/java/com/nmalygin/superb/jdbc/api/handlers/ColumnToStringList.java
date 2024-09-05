@@ -33,17 +33,17 @@ import java.util.List;
 
 public class ColumnToStringList implements ResultSetHandler<List<String>> {
 
-    private final String field;
+    private final String column;
 
-    public ColumnToStringList(String field) {
-        this.field = field;
+    public ColumnToStringList(final String column) {
+        this.column = column;
     }
 
     @Override
-    public List<String> handle(ResultSet resultSet) throws SQLException {
+    public List<String> handle(final ResultSet resultSet) throws SQLException {
         final List<String> list = new ArrayList<>();
         while (resultSet.next()) {
-            list.add(resultSet.getString(field));
+            list.add(resultSet.getString(column));
         }
 
         return list;

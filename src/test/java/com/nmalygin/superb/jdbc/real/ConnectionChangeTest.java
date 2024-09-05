@@ -46,7 +46,7 @@ class ConnectionChangeTest {
         final UUID id = UUID.randomUUID();
         final String title = "Clean Code";
 
-        try (final Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             new ConnectionChange(connection, "INSERT INTO books (id, title) VALUES ('" + id + "', '" + title + "')")
                     .apply();
         }

@@ -36,14 +36,14 @@ public class ConnectionBooksTable implements BooksTable {
 
     private final Connection connection;
 
-    public ConnectionBooksTable(Connection connection) {
+    public ConnectionBooksTable(final Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public void insert(UUID id, String title) throws SQLException {
+    public void insert(final UUID id, final String title) throws SQLException {
         final String sql = "INSERT INTO books (id, title) VALUES (?, ?)";
-        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, id);
             preparedStatement.setString(2, title);
             preparedStatement.executeUpdate();
@@ -53,7 +53,7 @@ public class ConnectionBooksTable implements BooksTable {
     @Override
     public List<Book> books() throws SQLException {
         final String sql = "SELECT id, title FROM books";
-        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             final List<Book> books = new ArrayList<>();
             while (resultSet.next()) {

@@ -33,12 +33,12 @@ public final class ByteParam implements Param {
 
     private final byte param;
 
-    public ByteParam(byte param) {
+    public ByteParam(final byte param) {
         this.param = param;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setByte(parameterIndex, param);
     }
 }

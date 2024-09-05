@@ -28,45 +28,35 @@ import com.nmalygin.superb.jdbc.api.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public final class RealRdbms implements Rdbms {
 
     private final DataSource dataSource;
 
-    public RealRdbms(DataSource dataSource) {
+    public RealRdbms(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public Query query(String sql, Param... withParams) {
+    public Query query(final String sql, final Param... withParams) {
         return new DataSourceQuery(dataSource, sql, withParams);
     }
 
     @Override
-    public Change change(String sql, Param... withParams) {
+    public Change change(final String sql, final Param... withParams) {
         return new DataSourceChange(dataSource, sql, withParams);
     }
 
     @Override
-    public Batch batch(String sql) throws SQLException {
+    public Batch batch(final String sql) throws SQLException {
         final Connection connection = dataSource.getConnection();
-        PreparedStatement preparedStatement;
-
         try {
-            preparedStatement = connection.prepareStatement(sql);
+            return new ClosingConnectionBatch(connection.prepareStatement(sql));
         } catch (Throwable t) {
-            try {
-                connection.close();
-            } catch (Throwable ignore) {
-                throw t;
-            }
-
+            connection.close();
             throw t;
         }
-
-        return new ConnectionBatch(connection, new PreparedStatementBatch(preparedStatement));
     }
 
     @Override
@@ -76,12 +66,7 @@ public final class RealRdbms implements Rdbms {
         try {
             connection.setAutoCommit(false);
         } catch (Throwable t) {
-            try {
-                connection.close();
-            } catch (Throwable ignore) {
-                throw t;
-            }
-
+            connection.close();
             throw t;
         }
 
@@ -89,23 +74,18 @@ public final class RealRdbms implements Rdbms {
     }
 
     @Override
-    public Transaction transaction(int withIsolationLevel) throws SQLException {
+    public Transaction transaction(final int isolationLevel) throws SQLException {
         final Connection connection = dataSource.getConnection();
 
         try {
             connection.setAutoCommit(false);
         } catch (Throwable t) {
-            try {
-                connection.close();
-            } catch (Throwable ignore) {
-                throw t;
-            }
-
+            connection.close();
             throw t;
         }
 
         try {
-            connection.setTransactionIsolation(withIsolationLevel);
+            connection.setTransactionIsolation(isolationLevel);
         } catch (Throwable t) {
             connection.close();
             throw t;

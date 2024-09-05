@@ -28,17 +28,18 @@ import com.nmalygin.superb.jdbc.api.Param;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public final class BytesParam implements Param {
 
     private final byte[] param;
 
-    public BytesParam(byte[] param) {
-        this.param = param;
+    public BytesParam(final byte[] param) {
+        this.param = Arrays.copyOf(param, param.length);
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setBytes(parameterIndex, param);
     }
 }

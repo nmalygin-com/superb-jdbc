@@ -33,12 +33,12 @@ public final class FloatParam implements Param {
 
     private final float param;
 
-    public FloatParam(float param) {
+    public FloatParam(final float param) {
         this.param = param;
     }
 
     @Override
-    public void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException {
+    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
         preparedStatement.setFloat(parameterIndex, param);
     }
 }

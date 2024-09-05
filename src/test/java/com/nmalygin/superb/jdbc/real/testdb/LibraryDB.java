@@ -33,19 +33,19 @@ final public class LibraryDB {
 
     private final DataSource dataSource;
 
-    public LibraryDB(DataSource dataSource) {
+    public LibraryDB(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     public void init() throws SQLException {
-        String sql =
+        final String sql =
                 "CREATE TABLE books " +
                 "(id UUID," +
                 "title VARCHAR NOT NULL, " +
                 "PRIMARY KEY (id)" +
                 ")";
 
-        try (final Connection connection = dataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.executeUpdate();
         }

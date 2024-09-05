@@ -31,5 +31,6 @@ public interface Transaction extends Queries, Changes, Batches, AutoCloseable {
     void setSavepoint(String withName) throws SQLException;
     void rollback() throws SQLException;
     void rollbackTo(String savepointWithName) throws SQLException;
+    @Override
     void close() throws SQLException;
 }

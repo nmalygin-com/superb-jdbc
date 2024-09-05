@@ -39,24 +39,24 @@ final class DataSourceQuery implements Query {
     private final DataSource dataSource;
     private final Sql sql;
 
-    DataSourceQuery(DataSource dataSource, Sql sql) {
+    DataSourceQuery(final DataSource dataSource, final Sql sql) {
         this.dataSource = dataSource;
         this.sql = sql;
     }
 
-    DataSourceQuery(DataSource dataSource, String sqlFragment, Param... withParams) {
+    DataSourceQuery(final DataSource dataSource, final String sqlFragment, final Param... withParams) {
         this(dataSource, new NotThreadSafeSql(sqlFragment, withParams));
     }
 
     @Override
-    public Query append(String sqlFragment, Param... withParams) {
+    public Query append(final String sqlFragment, final Param... withParams) {
         sql.append(sqlFragment, withParams);
 
         return this;
     }
 
     @Override
-    public <R> R executeWith(ResultSetHandler<R> withHandler) throws SQLException {
+    public <R> R executeWith(final ResultSetHandler<R> withHandler) throws SQLException {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql.parameterizedSql())) {
             sql.fill(preparedStatement);

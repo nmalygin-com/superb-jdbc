@@ -22,28 +22,38 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api.handlers;
+package com.nmalygin.superb.jdbc.real;
 
-import com.nmalygin.superb.jdbc.api.ResultSetHandler;
+import com.nmalygin.superb.jdbc.api.Batch;
+import com.nmalygin.superb.jdbc.api.Param;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class SystemOutHandler implements ResultSetHandler<Void> {
-    @Override
-    public Void handle(ResultSet resultSet) throws SQLException {
-        ResultSetMetaData rsmd = resultSet.getMetaData();
-        int columnsNumber = rsmd.getColumnCount();
-        while (resultSet.next()) {
-            for (int i = 1; i <= columnsNumber; i++) {
-                if (i > 1) System.out.print("  |  ");
-                String columnValue = resultSet.getString(i);
-                System.out.print(columnValue);
-            }
-            System.out.println();
-        }
+final class ClosingPreparedStatementBatch implements Batch {
 
-        return null;
+    private final PreparedStatement preparedStatement;
+
+    ClosingPreparedStatementBatch(final PreparedStatement preparedStatement) {
+        this.preparedStatement = preparedStatement;
+    }
+
+    @Override
+    public void put(final Param... params) throws SQLException {
+        int index = 1;
+        for (final Param param : params) {
+            param.fill(preparedStatement, index++);
+        }
+        preparedStatement.addBatch();
+    }
+
+    @Override
+    public void apply() throws SQLException {
+        preparedStatement.executeBatch();
+    }
+
+    @Override
+    public void close() throws SQLException {
+        preparedStatement.close();
     }
 }

@@ -32,7 +32,7 @@ final class FromResultSetBook implements Book {
     private final UUID id;
     private final String title;
 
-    FromResultSetBook(ResultSet resultSet) throws SQLException {
+    FromResultSetBook(final ResultSet resultSet) throws SQLException {
         this.id = resultSet.getObject("id", UUID.class);
         this.title = resultSet.getString("title");
     }

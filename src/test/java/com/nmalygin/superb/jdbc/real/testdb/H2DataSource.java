@@ -39,7 +39,7 @@ public final class H2DataSource implements DataSource {
     private final DataSource dataSource;
 
     public H2DataSource() {
-        JdbcDataSource dataSource = new JdbcDataSource();
+        final JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setURL("jdbc:h2:mem:" + UUID.randomUUID() + ";DB_CLOSE_DELAY=-1");
         dataSource.setUser("sa");
         dataSource.setPassword("sa");

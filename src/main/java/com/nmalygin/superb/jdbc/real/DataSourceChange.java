@@ -37,12 +37,12 @@ final class DataSourceChange implements Change {
     private final DataSource dataSource;
     private final Sql sql;
 
-    DataSourceChange(DataSource dataSource, Sql sql) {
+    DataSourceChange(final DataSource dataSource, final Sql sql) {
         this.dataSource = dataSource;
         this.sql = sql;
     }
 
-    DataSourceChange(DataSource dataSource, String sql, Param... withParams) {
+    DataSourceChange(final DataSource dataSource, final String sql, final Param... withParams) {
         this(dataSource, new NotThreadSafeSql(sql, withParams));
     }
 
