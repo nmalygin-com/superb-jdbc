@@ -22,23 +22,21 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api.params;
+package com.nmalygin.superb.jdbc.api.handlers.columns;
 
-import com.nmalygin.superb.jdbc.api.Param;
-
-import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class ObjectParam implements Param {
+public class StringColumn implements Column<String> {
 
-    private final Object param;
+    private final String name;
 
-    public ObjectParam(final Object param) {
-        this.param = param;
+    public StringColumn(String name) {
+        this.name = name;
     }
 
     @Override
-    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
-        preparedStatement.setObject(parameterIndex, param);
+    public String cellValue(ResultSet resultSet) throws SQLException {
+        return resultSet.getString(name);
     }
 }

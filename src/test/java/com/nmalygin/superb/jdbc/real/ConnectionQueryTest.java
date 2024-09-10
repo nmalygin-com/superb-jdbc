@@ -24,8 +24,9 @@
 
 package com.nmalygin.superb.jdbc.real;
 
+import com.nmalygin.superb.jdbc.api.handlers.columns.StringColumn;
 import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
-import com.nmalygin.superb.jdbc.api.handlers.ColumnToStringList;
+import com.nmalygin.superb.jdbc.api.handlers.ColumnToListRsh;
 import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
 import com.nmalygin.superb.jdbc.real.testdb.BooksTable;
 import com.nmalygin.superb.jdbc.real.testdb.DataSourceBooksTable;
@@ -51,7 +52,7 @@ class ConnectionQueryTest {
 
         try (Connection connection = dataSource.getConnection()) {
             final List<String> names = new ConnectionQuery(connection, "SELECT title FROM books")
-                    .executeWith(new ColumnToStringList("title"));
+                    .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 
             assertEquals(1, names.size());
             assertTrue(names.contains(title));

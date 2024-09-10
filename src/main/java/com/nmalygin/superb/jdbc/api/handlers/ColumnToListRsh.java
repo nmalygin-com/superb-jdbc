@@ -22,23 +22,31 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api.params;
+package com.nmalygin.superb.jdbc.api.handlers;
 
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.ResultSetHandler;
+import com.nmalygin.superb.jdbc.api.handlers.columns.Column;
 
-import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public final class BooleanParam implements Param {
+public class ColumnToListRsh<T> implements ResultSetHandler<List<T>> {
 
-    private final boolean param;
+    private final Column<T> column;
 
-    public BooleanParam(final boolean param) {
-        this.param = param;
+    public ColumnToListRsh(Column<T> column) {
+        this.column = column;
     }
 
     @Override
-    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
-        preparedStatement.setBoolean(parameterIndex, param);
+    public List<T> handle(final ResultSet resultSet) throws SQLException {
+        final List<T> list = new ArrayList<>();
+        while (resultSet.next()) {
+            list.add(column.cellValue(resultSet));
+        }
+
+        return list;
     }
 }

@@ -24,7 +24,7 @@
 
 package com.nmalygin.superb.jdbc.real;
 
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.Argument;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -35,21 +35,21 @@ import java.util.List;
 final class NotThreadSafeSql implements Sql {
 
     private final StringBuilder stringBuilder;
-    private final List<Param> params;
+    private final List<Argument> arguments;
 
-    NotThreadSafeSql(final StringBuilder stringBuilder, final List<Param> params) {
+    NotThreadSafeSql(final StringBuilder stringBuilder, final List<Argument> arguments) {
         this.stringBuilder = stringBuilder;
-        this.params = params;
+        this.arguments = arguments;
     }
 
-    NotThreadSafeSql(final String sqlFragment, final Param... withParams) {
-        this(new StringBuilder(sqlFragment), new ArrayList<>(Arrays.asList(withParams)));
+    NotThreadSafeSql(final String sqlFragment, final Argument... withArguments) {
+        this(new StringBuilder(sqlFragment), new ArrayList<>(Arrays.asList(withArguments)));
     }
 
     @Override
-    public void append(final String sqlFragment, final Param... withParams) {
+    public void append(final String sqlFragment, final Argument... withArguments) {
         stringBuilder.append(sqlFragment);
-        params.addAll(Arrays.asList(withParams));
+        arguments.addAll(Arrays.asList(withArguments));
     }
 
     @Override
@@ -60,8 +60,8 @@ final class NotThreadSafeSql implements Sql {
     @Override
     public void fill(final PreparedStatement preparedStatement) throws SQLException {
         int index = 1;
-        for (final Param param : params) {
-            param.fill(preparedStatement, index++);
+        for (final Argument argument : arguments) {
+            argument.pass(preparedStatement, index++);
         }
     }
 }

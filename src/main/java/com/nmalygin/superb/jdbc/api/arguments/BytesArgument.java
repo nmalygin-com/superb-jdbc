@@ -22,24 +22,24 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api.params;
+package com.nmalygin.superb.jdbc.api.arguments;
 
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.Argument;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-public final class BytesParam implements Param {
+public final class BytesArgument implements Argument {
 
-    private final byte[] param;
+    private final byte[] value;
 
-    public BytesParam(final byte[] param) {
-        this.param = Arrays.copyOf(param, param.length);
+    public BytesArgument(final byte[] value) {
+        this.value = Arrays.copyOf(value, value.length);
     }
 
     @Override
-    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
-        preparedStatement.setBytes(parameterIndex, param);
+    public void pass(final PreparedStatement preparedStatement, final int position) throws SQLException {
+        preparedStatement.setBytes(position, value);
     }
 }

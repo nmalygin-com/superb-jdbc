@@ -25,8 +25,8 @@
 package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
-import com.nmalygin.superb.jdbc.api.params.ObjectParam;
-import com.nmalygin.superb.jdbc.api.params.StringParam;
+import com.nmalygin.superb.jdbc.api.arguments.ObjectArgument;
+import com.nmalygin.superb.jdbc.api.arguments.StringArgument;
 import com.nmalygin.superb.jdbc.real.testdb.Book;
 import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
 import com.nmalygin.superb.jdbc.real.testdb.DataSourceBooksTable;
@@ -67,8 +67,8 @@ class DataSourceChangeTest {
 
         new DataSourceChange(dataSource,
                 "INSERT INTO books (id, title) VALUES (?, ?)",
-                new ObjectParam(id),
-                new StringParam(title))
+                new ObjectArgument(id),
+                new StringArgument(title))
                 .apply();
 
         final List<Book> books = new DataSourceBooksTable(dataSource).books();

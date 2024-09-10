@@ -24,6 +24,28 @@
 
 package com.nmalygin.superb.jdbc.api;
 
+/**
+ * {@link Change} factory.
+ *
+ * <p>
+ * Example of use:
+ * <pre>{@code
+ *   Change change = changes.change(
+ *                 "INSERT INTO books (id, title) VALUES (?, ?)",
+ *                 new IntParam(1),
+ *                 new StringParam("Clean Code"));
+ * }</pre>
+ *
+ * @author Nikolai Malygin
+ */
 public interface Changes {
-    Change change(String sql, Param... withParams);
+
+    /**
+     * Creates a {@link Change} object.
+     *
+     * @param sql Parameterized modify query (DML or DDL)
+     * @param withArguments Values for the corresponding parameters
+     * @return The {@link Change} object
+     */
+    Change change(String sql, Argument... withArguments);
 }

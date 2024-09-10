@@ -37,10 +37,12 @@ final class FromResultSetBook implements Book {
         this.title = resultSet.getString("title");
     }
 
+    @Override
     public UUID id() {
         return id;
     }
 
+    @Override
     public String title() {
         return title;
     }

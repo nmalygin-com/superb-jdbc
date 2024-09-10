@@ -26,6 +26,24 @@ package com.nmalygin.superb.jdbc.api;
 
 import java.sql.SQLException;
 
+/**
+ * {@link Batch} factory.
+ *
+ * <p>
+ * Example of use:
+ * <pre>{@code
+ *   Batch batch = batches.batch("INSERT INTO books(id, title) VALUES (?, ?)");
+ * }</pre>
+ *
+ * @author Nikolai Malygin
+ */
 public interface Batches {
+
+    /**
+     * Creates a {@link Batch} object.
+     *
+     * @param sql Parameterized sql query
+     * @return The {@link Batch} object
+     */
     Batch batch(String sql) throws SQLException;
 }

@@ -27,7 +27,7 @@ package com.nmalygin.superb.jdbc.api;
 import java.sql.SQLException;
 
 public interface Batch extends AutoCloseable {
-    void put(Param... params) throws SQLException;
+    void put(Argument... arguments) throws SQLException;
     void apply() throws SQLException;
     @Override
     void close() throws SQLException;

@@ -24,13 +24,13 @@
 
 package com.nmalygin.superb.jdbc.real;
 
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.Argument;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 interface Sql {
-    void append(String sqlFragment, Param... withParams);
+    void append(String sqlFragment, Argument... withArguments);
     String parameterizedSql();
     void fill(PreparedStatement preparedStatement) throws SQLException;
 }

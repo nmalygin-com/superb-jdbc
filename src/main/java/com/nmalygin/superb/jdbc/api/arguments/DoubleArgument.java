@@ -22,11 +22,23 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api;
+package com.nmalygin.superb.jdbc.api.arguments;
+
+import com.nmalygin.superb.jdbc.api.Argument;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public interface Param {
-    void fill(PreparedStatement preparedStatement, int parameterIndex) throws SQLException;
+public final class DoubleArgument implements Argument {
+
+    private final double value;
+
+    public DoubleArgument(final double value) {
+        this.value = value;
+    }
+
+    @Override
+    public void pass(final PreparedStatement preparedStatement, final int position) throws SQLException {
+        preparedStatement.setDouble(position, value);
+    }
 }

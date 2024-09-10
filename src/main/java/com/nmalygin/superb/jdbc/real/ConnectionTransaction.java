@@ -43,13 +43,13 @@ final class ConnectionTransaction implements Transaction {
     }
 
     @Override
-    public Query query(final String sql, final Param... withParams) {
-        return new ConnectionQuery(connection, sql, withParams);
+    public Query query(final String sql, final Argument... withArguments) {
+        return new ConnectionQuery(connection, sql, withArguments);
     }
 
     @Override
-    public Change change(final String sql, final Param... withParams) {
-        return new ConnectionChange(connection, sql, withParams);
+    public Change change(final String sql, final Argument... withArguments) {
+        return new ConnectionChange(connection, sql, withArguments);
     }
 
     @Override
@@ -65,12 +65,12 @@ final class ConnectionTransaction implements Transaction {
     }
 
     @Override
-    public void setSavepoint(final String withName) throws SQLException {
-        if (savePoints.containsKey(withName)) {
-            throw new IllegalArgumentException("Savepoint with name: " + withName + " already exists.");
+    public void setSavepoint(final String name) throws SQLException {
+        if (savePoints.containsKey(name)) {
+            throw new IllegalArgumentException("Savepoint with name: " + name + " already exists.");
         }
 
-        savePoints.put(withName, connection.setSavepoint(withName));
+        savePoints.put(name, connection.setSavepoint(name));
     }
 
     @Override
@@ -79,12 +79,12 @@ final class ConnectionTransaction implements Transaction {
     }
 
     @Override
-    public void rollbackTo(final String savepointWithName) throws SQLException {
-        if (!savePoints.containsKey(savepointWithName)) {
-            throw new IllegalArgumentException("Savepoint with name: " + savepointWithName + " not found.");
+    public void rollbackTo(final String savepoint) throws SQLException {
+        if (!savePoints.containsKey(savepoint)) {
+            throw new IllegalArgumentException("Savepoint with name: " + savepoint + " not found.");
         }
 
-        connection.rollback(savePoints.get(savepointWithName));
+        connection.rollback(savePoints.get(savepoint));
     }
 
     @Override

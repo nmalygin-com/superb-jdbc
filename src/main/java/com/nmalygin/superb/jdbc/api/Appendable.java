@@ -25,5 +25,5 @@
 package com.nmalygin.superb.jdbc.api;
 
 public interface Appendable<T> {
-    T append(String sqlFragment, Param... withParams);
+    T append(String sqlFragment, Argument... withArguments);
 }

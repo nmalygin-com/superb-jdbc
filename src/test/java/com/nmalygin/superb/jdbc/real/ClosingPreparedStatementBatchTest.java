@@ -25,8 +25,8 @@
 package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.api.Batch;
-import com.nmalygin.superb.jdbc.api.params.ObjectParam;
-import com.nmalygin.superb.jdbc.api.params.StringParam;
+import com.nmalygin.superb.jdbc.api.arguments.ObjectArgument;
+import com.nmalygin.superb.jdbc.api.arguments.StringArgument;
 import com.nmalygin.superb.jdbc.real.testdb.Book;
 import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
 import com.nmalygin.superb.jdbc.real.testdb.DataSourceBooksTable;
@@ -51,9 +51,9 @@ class ClosingPreparedStatementBatchTest {
 
         try (Connection connection = dataSource.getConnection();
              Batch batch = new ClosingPreparedStatementBatch(connection.prepareStatement(sql))) {
-            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Clean Code"));
-            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Code Complete"));
-            batch.put(new ObjectParam(UUID.randomUUID()), new StringParam("Effective Java"));
+            batch.put(new ObjectArgument(UUID.randomUUID()), new StringArgument("Clean Code"));
+            batch.put(new ObjectArgument(UUID.randomUUID()), new StringArgument("Code Complete"));
+            batch.put(new ObjectArgument(UUID.randomUUID()), new StringArgument("Effective Java"));
             batch.apply();
         }
 

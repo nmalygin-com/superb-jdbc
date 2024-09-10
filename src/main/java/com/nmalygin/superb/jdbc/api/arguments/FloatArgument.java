@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api;
+package com.nmalygin.superb.jdbc.api.arguments;
 
+import com.nmalygin.superb.jdbc.api.Argument;
+
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Represents a data retrieval query.
- *
- * <p>
- * Example of use:
- * <pre>{@code
- *   List<String> titles = queries
- *                 .query("SELECT title FROM books")
- *                 .executeWith(/* some handler *&#47;);
- * }</pre>
- *
- * @author Nikolai Malygin
- */
-public interface Query extends Appendable<Query> {
-    <R> R executeWith(ResultSetHandler<R> resultSetHandler) throws SQLException;
+public final class FloatArgument implements Argument {
+
+    private final float value;
+
+    public FloatArgument(final float value) {
+        this.value = value;
+    }
+
+    @Override
+    public void pass(final PreparedStatement preparedStatement, final int position) throws SQLException {
+        preparedStatement.setFloat(position, value);
+    }
 }

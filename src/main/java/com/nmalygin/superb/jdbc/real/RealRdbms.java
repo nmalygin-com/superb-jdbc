@@ -39,13 +39,13 @@ public final class RealRdbms implements Rdbms {
     }
 
     @Override
-    public Query query(final String sql, final Param... withParams) {
-        return new DataSourceQuery(dataSource, sql, withParams);
+    public Query query(final String sql, final Argument... withArguments) {
+        return new DataSourceQuery(dataSource, sql, withArguments);
     }
 
     @Override
-    public Change change(final String sql, final Param... withParams) {
-        return new DataSourceChange(dataSource, sql, withParams);
+    public Change change(final String sql, final Argument... withArguments) {
+        return new DataSourceChange(dataSource, sql, withArguments);
     }
 
     @Override

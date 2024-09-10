@@ -25,7 +25,7 @@
 package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.api.Change;
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.Argument;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,8 +41,8 @@ final class ConnectionChange implements Change {
         this.sql = sql;
     }
 
-    ConnectionChange(final Connection connection, final String sql, final Param... withParams) {
-        this(connection, new NotThreadSafeSql(sql, withParams));
+    ConnectionChange(final Connection connection, final String sql, final Argument... withArguments) {
+        this(connection, new NotThreadSafeSql(sql, withArguments));
     }
 
     @Override

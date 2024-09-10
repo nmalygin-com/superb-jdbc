@@ -22,24 +22,23 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api.params;
+package com.nmalygin.superb.jdbc.api.arguments;
 
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.Argument;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public final class BigDecimalParam implements Param {
+public class StringArgument implements Argument {
 
-    private final BigDecimal param;
+    private final String value;
 
-    public BigDecimalParam(final BigDecimal param) {
-        this.param = param;
+    public StringArgument(final String value) {
+        this.value = value;
     }
 
     @Override
-    public void fill(final PreparedStatement preparedStatement, final int parameterIndex) throws SQLException {
-        preparedStatement.setBigDecimal(parameterIndex, param);
+    public void pass(final PreparedStatement preparedStatement, final int position) throws SQLException {
+        preparedStatement.setString(position, value);
     }
 }

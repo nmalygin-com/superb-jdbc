@@ -25,7 +25,7 @@
 package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.api.Batch;
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.Argument;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -39,10 +39,10 @@ final class ClosingPreparedStatementBatch implements Batch {
     }
 
     @Override
-    public void put(final Param... params) throws SQLException {
+    public void put(final Argument... arguments) throws SQLException {
         int index = 1;
-        for (final Param param : params) {
-            param.fill(preparedStatement, index++);
+        for (final Argument argument : arguments) {
+            argument.pass(preparedStatement, index++);
         }
         preparedStatement.addBatch();
     }

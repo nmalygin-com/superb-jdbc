@@ -28,9 +28,9 @@ import java.sql.SQLException;
 
 public interface Transaction extends Queries, Changes, Batches, AutoCloseable {
     void commit() throws SQLException;
-    void setSavepoint(String withName) throws SQLException;
+    void setSavepoint(String name) throws SQLException;
     void rollback() throws SQLException;
-    void rollbackTo(String savepointWithName) throws SQLException;
+    void rollbackTo(String savepoint) throws SQLException;
     @Override
     void close() throws SQLException;
 }

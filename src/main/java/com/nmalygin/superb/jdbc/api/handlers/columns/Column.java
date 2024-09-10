@@ -22,30 +22,11 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api.handlers;
-
-import com.nmalygin.superb.jdbc.api.ResultSetHandler;
+package com.nmalygin.superb.jdbc.api.handlers.columns;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class ColumnToStringList implements ResultSetHandler<List<String>> {
-
-    private final String column;
-
-    public ColumnToStringList(final String column) {
-        this.column = column;
-    }
-
-    @Override
-    public List<String> handle(final ResultSet resultSet) throws SQLException {
-        final List<String> list = new ArrayList<>();
-        while (resultSet.next()) {
-            list.add(resultSet.getString(column));
-        }
-
-        return list;
-    }
+public interface Column<T> {
+    T cellValue(ResultSet resultSet) throws SQLException;
 }

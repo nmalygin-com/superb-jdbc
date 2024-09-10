@@ -24,7 +24,7 @@
 
 package com.nmalygin.superb.jdbc.real;
 
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.Argument;
 import com.nmalygin.superb.jdbc.api.Query;
 import com.nmalygin.superb.jdbc.api.ResultSetHandler;
 
@@ -42,22 +42,22 @@ final class ConnectionQuery implements Query {
         this.sql = sql;
     }
 
-    ConnectionQuery(final Connection connection, final String sqlFragment, final Param... withParams) {
-        this(connection, new NotThreadSafeSql(sqlFragment, withParams));
+    ConnectionQuery(final Connection connection, final String sqlFragment, final Argument... withArguments) {
+        this(connection, new NotThreadSafeSql(sqlFragment, withArguments));
     }
 
     @Override
-    public Query append(final String sqlFragment, final Param... withParams) {
-        sql.append(sqlFragment, withParams);
+    public Query append(final String sqlFragment, final Argument... withArguments) {
+        sql.append(sqlFragment, withArguments);
         return this;
     }
 
     @Override
-    public <R> R executeWith(final ResultSetHandler<R> withHandler) throws SQLException {
+    public <R> R executeWith(final ResultSetHandler<R> resultSetHandler) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql.parameterizedSql())) {
             sql.fill(preparedStatement);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return withHandler.handle(resultSet);
+                return resultSetHandler.handle(resultSet);
             }
         }
     }

@@ -24,6 +24,25 @@
 
 package com.nmalygin.superb.jdbc.api;
 
+/**
+ * {@link Query} factory.
+ *
+ * <p>
+ * Example of use:
+ * <pre>{@code
+ *   Query query = queries.query("SELECT title FROM books);
+ * }</pre>
+ *
+ * @author Nikolai Malygin
+ */
 public interface Queries {
-    Query query(String sql, Param... withParams);
+
+    /**
+     * Creates a {@link Query} object.
+     *
+     * @param sql Parameterized data retrieval query
+     * @param withArguments Arguments for the corresponding parameters in the sql
+     * @return The {@link Query} object
+     */
+    Query query(String sql, Argument... withArguments);
 }

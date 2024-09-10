@@ -25,7 +25,7 @@
 package com.nmalygin.superb.jdbc.real;
 
 import com.nmalygin.superb.jdbc.api.Change;
-import com.nmalygin.superb.jdbc.api.Param;
+import com.nmalygin.superb.jdbc.api.Argument;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -42,8 +42,8 @@ final class DataSourceChange implements Change {
         this.sql = sql;
     }
 
-    DataSourceChange(final DataSource dataSource, final String sql, final Param... withParams) {
-        this(dataSource, new NotThreadSafeSql(sql, withParams));
+    DataSourceChange(final DataSource dataSource, final String sql, final Argument... withArguments) {
+        this(dataSource, new NotThreadSafeSql(sql, withArguments));
     }
 
     @Override
