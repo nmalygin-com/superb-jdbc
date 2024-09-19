@@ -32,10 +32,36 @@ import java.sql.SQLException;
  * @author Nikolai Malygin
  */
 public interface Transaction extends Queries, Changes, Batches, AutoCloseable {
+    /**
+     *
+     * @throws SQLException SQLException
+     */
     void commit() throws SQLException;
+
+    /**
+     *
+     * @param name savepoint name
+     * @throws SQLException SQLException
+     */
     void setSavepoint(String name) throws SQLException;
+
+    /**
+     *
+     * @throws SQLException SQLException
+     */
     void rollback() throws SQLException;
+
+    /**
+     *
+     * @param savepoint savepoint name
+     * @throws SQLException SQLException
+     */
     void rollbackTo(String savepoint) throws SQLException;
+
+    /**
+     *
+     * @throws SQLException SQLException
+     */
     @Override
     void close() throws SQLException;
 }

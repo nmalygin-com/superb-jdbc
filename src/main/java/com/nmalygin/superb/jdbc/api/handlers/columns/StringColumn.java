@@ -27,14 +27,29 @@ package com.nmalygin.superb.jdbc.api.handlers.columns;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * StringColumn
+ *
+ * @author Nikolai Malygin
+ */
 public class StringColumn implements Column<String> {
 
     private final String name;
 
+    /**
+     *
+     * @param name column name
+     */
     public StringColumn(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @param resultSet Result set on the specific row
+     * @return value of a cell in the row for the column
+     * @throws SQLException SQLException
+     */
     @Override
     public String cellValue(ResultSet resultSet) throws SQLException {
         return resultSet.getString(name);

@@ -37,7 +37,7 @@ public interface Column<T> {
      *
      * @param resultSet Result set on the specific row
      * @return The value
-     * @throws SQLException
+     * @throws SQLException If cell value do not get from the resultSet
      */
     T cellValue(ResultSet resultSet) throws SQLException;
 }

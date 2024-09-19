@@ -40,7 +40,7 @@ public interface ResultSetHandler<R> {
      *
      * @param resultSet ResultSet
      * @return Some object after processing resultSet
-     * @throws SQLException
+     * @throws SQLException SQLException
      */
     R handle(ResultSet resultSet) throws SQLException;
 }

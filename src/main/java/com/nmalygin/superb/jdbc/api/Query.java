@@ -32,5 +32,12 @@ import java.sql.SQLException;
  * @author Nikolai Malygin
  */
 public interface Query extends Appendable<Query> {
+    /**
+     *
+     * @param resultSetHandler handler of result set of the query
+     * @return Result of the resultSetHandler work
+     * @param <R> Type of the resultSetHandler result
+     * @throws SQLException SQLException
+     */
     <R> R executeWith(ResultSetHandler<R> resultSetHandler) throws SQLException;
 }

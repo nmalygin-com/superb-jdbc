@@ -32,14 +32,29 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ColumnToListRsh
+ *
+ * @author Nikolai Malygin
+ */
 public class ColumnToListRsh<T> implements ResultSetHandler<List<T>> {
 
     private final Column<T> column;
 
+    /**
+     *
+     * @param column typed column
+     */
     public ColumnToListRsh(Column<T> column) {
         this.column = column;
     }
 
+    /**
+     *
+     * @param resultSet ResultSet
+     * @return list values of the column
+     * @throws SQLException SQLException
+     */
     @Override
     public List<T> handle(final ResultSet resultSet) throws SQLException {
         final List<T> list = new ArrayList<>();

@@ -30,10 +30,19 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * RealRdbms
+ *
+ * @author Nikolai Malygin
+ */
 public final class RealRdbms implements Rdbms {
 
     private final DataSource dataSource;
 
+    /**
+     *
+     * @param dataSource DataSource
+     */
     public RealRdbms(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
