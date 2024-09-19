@@ -26,6 +26,17 @@ package com.nmalygin.superb.jdbc.api;
 
 import java.sql.SQLException;
 
+/**
+ * Represents a database query like DML or DDL.
+ *
+ * @author Nikolai Malygin
+ */
 public interface Change {
+
+    /**
+     * Apply the change to the database.
+     *
+     * @throws SQLException if a database access error occurs or connection is closed
+     */
     void apply() throws SQLException;
 }

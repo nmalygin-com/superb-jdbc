@@ -29,10 +29,19 @@ import com.nmalygin.superb.jdbc.api.Argument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * An object argument
+ *
+ * @author Nikolai Malygin
+ */
 public final class ObjectArgument implements Argument {
 
     private final Object value;
 
+    /**
+     *
+     * @param value Object value
+     */
     public ObjectArgument(final Object value) {
         this.value = value;
     }

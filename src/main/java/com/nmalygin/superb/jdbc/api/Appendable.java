@@ -24,6 +24,19 @@
 
 package com.nmalygin.superb.jdbc.api;
 
+/**
+ * An object to which the sql fragment can be appended.
+ *
+ * @param <T> Type of return
+ * @author Nikolai Malygin
+ */
 public interface Appendable<T> {
+    /**
+     * Appends the parametrized sql fragment with attributes to the object.
+     *
+     * @param sqlFragment Parametrized sql fragment
+     * @param withArguments Arguments for the corresponding parameters in the sqlFragment
+     * @return itself
+     */
     T append(String sqlFragment, Argument... withArguments);
 }

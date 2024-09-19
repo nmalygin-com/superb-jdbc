@@ -27,12 +27,6 @@ package com.nmalygin.superb.jdbc.api;
 /**
  * {@link Query} factory.
  *
- * <p>
- * Example of use:
- * <pre>{@code
- *   Query query = queries.query("SELECT title FROM books);
- * }</pre>
- *
  * @author Nikolai Malygin
  */
 public interface Queries {

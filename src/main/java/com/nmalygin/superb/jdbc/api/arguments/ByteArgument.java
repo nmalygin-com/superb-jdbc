@@ -29,10 +29,19 @@ import com.nmalygin.superb.jdbc.api.Argument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A byte argument
+ *
+ * @author Nikolai Malygin
+ */
 public final class ByteArgument implements Argument {
 
     private final byte value;
 
+    /**
+     *
+     * @param value byte value
+     */
     public ByteArgument(final byte value) {
         this.value = value;
     }

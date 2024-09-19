@@ -29,10 +29,19 @@ import com.nmalygin.superb.jdbc.api.Argument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A boolean argument
+ *
+ * @author Nikolai Malygin
+ */
 public final class BooleanArgument implements Argument {
 
     private final boolean value;
 
+    /**
+     *
+     * @param value boolean value
+     */
     public BooleanArgument(final boolean value) {
         this.value = value;
     }

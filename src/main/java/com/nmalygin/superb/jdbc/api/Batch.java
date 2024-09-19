@@ -26,9 +26,37 @@ package com.nmalygin.superb.jdbc.api;
 
 import java.sql.SQLException;
 
+/**
+ * An object representing a batch of operations.
+ *
+ * @author Nikolai Malygin
+ */
 public interface Batch extends AutoCloseable {
+
+    /**
+     * Adding an operation to the batch.
+     *
+     * @param arguments Arguments of one operation
+     * @throws SQLException if parameterIndex does not correspond to a parameter marker in the SQL statement;
+     * if a database access error occurs or this method is called on a closed PreparedStatement
+     */
     void put(Argument... arguments) throws SQLException;
+
+    /**
+     * Apply the batch to the database.
+     *
+     * @throws SQLException if a database access error occurs, this method is called on a closed Statement or the driver does not support batch statements.
+     * if one of the commands sent to the database fails to execute properly or attempts to return a result set.
+     * if the driver has determined that the timeout value that was specified by the setQueryTimeout method has been exceeded and has at least attempted to cancel the currently running Statement
+     */
     void apply() throws SQLException;
+
+    /**
+     * Releases the batch object and JDBC resources. It is generally good practice to release resources as
+     * soon as you are finished with them to avoid tying up database resources.
+     *
+     * @throws SQLException if a database access error occurs
+     */
     @Override
     void close() throws SQLException;
 }

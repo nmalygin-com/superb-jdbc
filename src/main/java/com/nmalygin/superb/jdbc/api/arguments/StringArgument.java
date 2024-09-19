@@ -29,10 +29,19 @@ import com.nmalygin.superb.jdbc.api.Argument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A string argument
+ *
+ * @author Nikolai Malygin
+ */
 public class StringArgument implements Argument {
 
     private final String value;
 
+    /**
+     *
+     * @param value String value
+     */
     public StringArgument(final String value) {
         this.value = value;
     }

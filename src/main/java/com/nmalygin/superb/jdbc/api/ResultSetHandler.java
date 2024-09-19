@@ -27,6 +27,20 @@ package com.nmalygin.superb.jdbc.api;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * The object that processes the result set of a {@link Query}.
+ *
+ * @param <R> Type of the object that return the handle method.
+ * @author Nikolai Malygin
+ */
 public interface ResultSetHandler<R> {
+
+    /**
+     *
+     *
+     * @param resultSet ResultSet
+     * @return Some object after processing resultSet
+     * @throws SQLException
+     */
     R handle(ResultSet resultSet) throws SQLException;
 }

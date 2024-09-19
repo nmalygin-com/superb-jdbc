@@ -29,10 +29,19 @@ import com.nmalygin.superb.jdbc.api.Argument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * An integer argument
+ *
+ * @author Nikolai Malygin
+ */
 public final class IntArgument implements Argument {
 
     private final int value;
 
+    /**
+     *
+     * @param value int value
+     */
     public IntArgument(final int value) {
         this.value = value;
     }

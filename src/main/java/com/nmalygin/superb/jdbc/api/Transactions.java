@@ -26,7 +26,23 @@ package com.nmalygin.superb.jdbc.api;
 
 import java.sql.SQLException;
 
+/**
+ * {@link Transaction} factory.
+ *
+ * @author Nikolai Malygin
+ */
 public interface Transactions {
+    /**
+     * @return New transaction with default isolation level
+     * @throws SQLException
+     */
     Transaction transaction() throws SQLException;
+
+    /**
+     *
+     * @param isolationLevel
+     * @return New transaction with the isolationLevel
+     * @throws SQLException
+     */
     Transaction transaction(int isolationLevel) throws SQLException;
 }

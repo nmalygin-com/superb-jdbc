@@ -27,15 +27,6 @@ package com.nmalygin.superb.jdbc.api;
 /**
  * {@link Change} factory.
  *
- * <p>
- * Example of use:
- * <pre>{@code
- *   Change change = changes.change(
- *                 "INSERT INTO books (id, title) VALUES (?, ?)",
- *                 new IntParam(1),
- *                 new StringParam("Clean Code"));
- * }</pre>
- *
  * @author Nikolai Malygin
  */
 public interface Changes {

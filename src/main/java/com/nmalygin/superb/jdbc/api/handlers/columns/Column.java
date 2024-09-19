@@ -27,6 +27,17 @@ package com.nmalygin.superb.jdbc.api.handlers.columns;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ *
+ * @param <T> Type of the column
+ * @author Nikolai Malygin
+ */
 public interface Column<T> {
+    /**
+     *
+     * @param resultSet Result set on the specific row
+     * @return The value
+     * @throws SQLException
+     */
     T cellValue(ResultSet resultSet) throws SQLException;
 }

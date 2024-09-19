@@ -29,14 +29,6 @@ import java.sql.SQLException;
 /**
  * Represents a data retrieval query.
  *
- * <p>
- * Example of use:
- * <pre>{@code
- *   List<String> titles = queries
- *                 .query("SELECT title FROM books")
- *                 .executeWith(/* some handler *&#47;);
- * }</pre>
- *
  * @author Nikolai Malygin
  */
 public interface Query extends Appendable<Query> {

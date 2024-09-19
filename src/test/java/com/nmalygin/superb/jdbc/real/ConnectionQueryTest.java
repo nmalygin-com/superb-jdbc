@@ -51,11 +51,11 @@ class ConnectionQueryTest {
         booksTable.insert(UUID.randomUUID(), title);
 
         try (Connection connection = dataSource.getConnection()) {
-            final List<String> names = new ConnectionQuery(connection, "SELECT title FROM books")
+            final List<String> titles = new ConnectionQuery(connection, "SELECT title FROM books")
                     .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 
-            assertEquals(1, names.size());
-            assertTrue(names.contains(title));
+            assertEquals(1, titles.size());
+            assertTrue(titles.contains(title));
         }
     }
 }

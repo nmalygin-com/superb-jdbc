@@ -24,5 +24,10 @@
 
 package com.nmalygin.superb.jdbc.api;
 
+/**
+ * The Relational Database Management System object.
+ *
+ * @author Nikolai Malygin
+ */
 public interface Rdbms extends Queries, Changes, Batches, Transactions {
 }

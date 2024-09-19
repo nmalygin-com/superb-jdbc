@@ -29,10 +29,19 @@ import com.nmalygin.superb.jdbc.api.Argument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A short argument
+ *
+ * @author Nikolai Malygin
+ */
 public final class ShortArgument implements Argument {
 
     private final short value;
 
+    /**
+     *
+     * @param value short value
+     */
     public ShortArgument(final short value) {
         this.value = value;
     }

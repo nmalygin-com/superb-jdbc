@@ -26,6 +26,11 @@ package com.nmalygin.superb.jdbc.api;
 
 import java.sql.SQLException;
 
+/**
+ * The transaction object.
+ *
+ * @author Nikolai Malygin
+ */
 public interface Transaction extends Queries, Changes, Batches, AutoCloseable {
     void commit() throws SQLException;
     void setSavepoint(String name) throws SQLException;

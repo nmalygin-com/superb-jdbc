@@ -29,10 +29,19 @@ import com.nmalygin.superb.jdbc.api.Argument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A double argument
+ *
+ * @author Nikolai Malygin
+ */
 public final class DoubleArgument implements Argument {
 
     private final double value;
 
+    /**
+     *
+     * @param value double value
+     */
     public DoubleArgument(final double value) {
         this.value = value;
     }

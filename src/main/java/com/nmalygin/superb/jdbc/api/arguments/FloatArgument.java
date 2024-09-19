@@ -29,10 +29,19 @@ import com.nmalygin.superb.jdbc.api.Argument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A float argument
+ *
+ * @author Nikolai Malygin
+ */
 public final class FloatArgument implements Argument {
 
     private final float value;
 
+    /**
+     *
+     * @param value float value
+     */
     public FloatArgument(final float value) {
         this.value = value;
     }

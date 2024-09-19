@@ -30,10 +30,19 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A BigDecimal argument
+ *
+ * @author Nikolai Malygin
+ */
 public final class BigDecimalArgument implements Argument {
 
     private final BigDecimal value;
 
+    /**
+     *
+     * @param value BigDecimal value
+     */
     public BigDecimalArgument(final BigDecimal value) {
         this.value = value;
     }

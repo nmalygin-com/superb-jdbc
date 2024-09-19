@@ -29,10 +29,19 @@ import com.nmalygin.superb.jdbc.api.Argument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A long argument
+ *
+ * @author Nikolai Malygin
+ */
 public final class LongArgument implements Argument {
 
     private final long value;
 
+    /**
+     *
+     * @param value long value
+     */
     public LongArgument(final long value) {
         this.value = value;
     }

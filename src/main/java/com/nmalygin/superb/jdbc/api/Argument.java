@@ -27,6 +27,19 @@ package com.nmalygin.superb.jdbc.api;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Parameterized sql query argument.
+ *
+ * @author Nikolai Malygin
+ */
 public interface Argument {
+
+    /**
+     *
+     * @param preparedStatement PreparedStatement
+     * @param position Index of the argument
+     * @throws SQLException if parameterIndex does not correspond to a parameter marker in the SQL statement;
+     * if a database access error occurs or this method is called on a closed PreparedStatement
+     */
     void pass(PreparedStatement preparedStatement, int position) throws SQLException;
 }

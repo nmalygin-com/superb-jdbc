@@ -30,10 +30,19 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+/**
+ * A byte array argument
+ *
+ * @author Nikolai Malygin
+ */
 public final class BytesArgument implements Argument {
 
     private final byte[] value;
 
+    /**
+     *
+     * @param value byte[] value
+     */
     public BytesArgument(final byte[] value) {
         this.value = Arrays.copyOf(value, value.length);
     }

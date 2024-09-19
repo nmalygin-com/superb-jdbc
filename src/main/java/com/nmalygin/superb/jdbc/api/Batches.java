@@ -29,12 +29,6 @@ import java.sql.SQLException;
 /**
  * {@link Batch} factory.
  *
- * <p>
- * Example of use:
- * <pre>{@code
- *   Batch batch = batches.batch("INSERT INTO books(id, title) VALUES (?, ?)");
- * }</pre>
- *
  * @author Nikolai Malygin
  */
 public interface Batches {
@@ -44,6 +38,7 @@ public interface Batches {
      *
      * @param sql Parameterized sql query
      * @return The {@link Batch} object
+     * @throws SQLException if a database access error occurs or database connection is closed
      */
     Batch batch(String sql) throws SQLException;
 }
