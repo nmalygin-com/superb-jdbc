@@ -23,14 +23,12 @@
 
 2. Create a rdbms object
 ```java
-RDbms rdbms = new RealRDbms(/* your datasource */);
+Rdbms rdbms = new RealRdbms(dataSource);
 ```
 
 3. Use the rdbms object
 ```java
-List<String> titles = rdbms
-        .query("SELECT title FROM books")
-        .executeWith(new StringListHandler("title"));
+rdbms.change("INSERT INTO books(title) VALUES ('Clean Code')").apply();
 ```
 
 ## Use cases

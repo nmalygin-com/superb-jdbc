@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ConnectionQueryTest {
     @Test
-    void simpleInsert() throws SQLException {
+    void simpleSelect() throws SQLException {
         final DataSource dataSource = new H2DataSource();
         new LibraryDB(dataSource).init();
         final BooksTable booksTable = new DataSourceBooksTable(dataSource);

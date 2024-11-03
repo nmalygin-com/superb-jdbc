@@ -22,32 +22,29 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.real.testdb;
+package com.nmalygin.superb.jdbc.real;
+
+import com.nmalygin.superb.jdbc.api.Rdbms;
+import com.nmalygin.superb.jdbc.real.testdb.BooksTable;
+import com.nmalygin.superb.jdbc.real.testdb.DataSourceBooksTable;
+import com.nmalygin.superb.jdbc.real.testdb.H2DataSource;
+import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
+import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-final public class LibraryDB {
+public class ReadmeTest {
 
-    private final DataSource dataSource;
+    @Test
+    void quickStart() throws SQLException {
+        final DataSource dataSource = new H2DataSource();
+        new LibraryDB(dataSource).init();
+        final BooksTable booksTable = new DataSourceBooksTable(dataSource);
 
-    public LibraryDB(final DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+        Rdbms rdbms = new RealRdbms(dataSource);
+        rdbms.change("INSERT INTO books(title) VALUES ('Clean Code')").apply();
 
-    public void init() throws SQLException {
-        final String sql =
-                "CREATE TABLE books " +
-                "(id UUID DEFAULT random_uuid()," +
-                "title VARCHAR NOT NULL, " +
-                "PRIMARY KEY (id)" +
-                ")";
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.executeUpdate();
-        }
+        System.out.println(booksTable.books().get(0).title());
     }
 }
