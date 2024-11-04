@@ -120,6 +120,7 @@ SOFTWARE.
                 <version>3.24.0</version>
                 <executions>
                     <execution>
+                        <phase>package</phase>
                         <goals>
                             <goal>check</goal>
                             <goal>cpd-check</goal>
