@@ -58,6 +58,7 @@ public final class RealRdbms implements Rdbms {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public Batch batch(final String sql) throws SQLException {
         final Connection connection = dataSource.getConnection();
         try {

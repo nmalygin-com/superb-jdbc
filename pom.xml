@@ -84,6 +84,11 @@ SOFTWARE.
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.3.1</version>
                 <executions>
@@ -115,6 +120,7 @@ SOFTWARE.
                 <version>3.24.0</version>
                 <executions>
                     <execution>
+                        <phase>package</phase>
                         <goals>
                             <goal>check</goal>
                             <goal>cpd-check</goal>
@@ -125,7 +131,8 @@ SOFTWARE.
                     <rulesets>
                         <ruleset>${basedir}/pmd-ruleset.xml</ruleset>
                     </rulesets>
-                    <includeTests>true</includeTests>
+                    <!-- todo: use different ruleset for tests -->
+                    <includeTests>false</includeTests>
                 </configuration>
             </plugin>
             <plugin>

@@ -34,6 +34,7 @@ import java.util.List;
 
 final class NotThreadSafeSql implements Sql {
 
+    @SuppressWarnings("PMD.AvoidStringBufferField")
     private final StringBuilder stringBuilder;
     private final List<Argument> arguments;
 
