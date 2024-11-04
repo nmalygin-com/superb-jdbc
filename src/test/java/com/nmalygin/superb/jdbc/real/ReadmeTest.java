@@ -49,9 +49,4 @@ public class ReadmeTest {
 
         System.out.println(booksTable.books().get(0).title());
     }
-
-    @Test
-    void failTest() {
-        assertTrue(false);
-    }
 }
