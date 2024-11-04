@@ -45,7 +45,7 @@ public class ColumnToListRsh<T> implements ResultSetHandler<List<T>> {
      *
      * @param column typed column
      */
-    public ColumnToListRsh(Column<T> column) {
+    public ColumnToListRsh(final Column<T> column) {
         this.column = column;
     }
 

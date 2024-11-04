@@ -40,7 +40,7 @@ public class StringColumn implements Column<String> {
      *
      * @param name column name
      */
-    public StringColumn(String name) {
+    public StringColumn(final String name) {
         this.name = name;
     }
 
@@ -51,7 +51,7 @@ public class StringColumn implements Column<String> {
      * @throws SQLException SQLException
      */
     @Override
-    public String cellValue(ResultSet resultSet) throws SQLException {
+    public String cellValue(final ResultSet resultSet) throws SQLException {
         return resultSet.getString(name);
     }
 }

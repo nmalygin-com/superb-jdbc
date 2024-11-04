@@ -29,6 +29,7 @@ import com.nmalygin.superb.jdbc.api.Argument;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@SuppressWarnings("PMD.ShortClassName")
 interface Sql {
     void append(String sqlFragment, Argument... withArguments);
     String parameterizedSql();

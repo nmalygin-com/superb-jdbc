@@ -130,7 +130,8 @@ SOFTWARE.
                     <rulesets>
                         <ruleset>${basedir}/pmd-ruleset.xml</ruleset>
                     </rulesets>
-                    <includeTests>true</includeTests>
+                    <!-- todo: use different ruleset for tests -->
+                    <includeTests>false</includeTests>
                 </configuration>
             </plugin>
             <plugin>

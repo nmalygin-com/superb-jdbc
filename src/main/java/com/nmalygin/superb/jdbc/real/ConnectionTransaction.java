@@ -36,10 +36,15 @@ import java.util.Map;
 final class ConnectionTransaction implements Transaction {
 
     private final Connection connection;
-    private final Map<String, Savepoint> savePoints = new HashMap<>();
+    private final Map<String, Savepoint> savePoints;
+
+    ConnectionTransaction(final Connection connection, final Map<String, Savepoint> savePoints) {
+        this.connection = connection;
+        this.savePoints = savePoints;
+    }
 
     ConnectionTransaction(final Connection connection) {
-        this.connection = connection;
+        this(connection, new HashMap<>());
     }
 
     @Override

@@ -55,14 +55,8 @@ final class ClosingConnectionBatch implements Batch {
 
     @Override
     public void close() throws SQLException {
-        final Connection connection = preparedStatement.getConnection();
-        try {
+        try (Connection ignored = preparedStatement.getConnection()) {
             preparedStatement.close();
-        } catch (Exception e) {
-            connection.close();
-            throw e;
         }
-
-        connection.close();
     }
 }

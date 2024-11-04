@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ReadmeTest {
 
@@ -47,6 +47,6 @@ public class ReadmeTest {
         Rdbms rdbms = new RealRdbms(dataSource);
         rdbms.change("INSERT INTO books(title) VALUES ('Clean Code')").apply();
 
-        System.out.println(booksTable.books().get(0).title());
+        assertEquals(1, booksTable.books().size());
     }
 }
