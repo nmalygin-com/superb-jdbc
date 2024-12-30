@@ -56,17 +56,17 @@ Interface `Query` is a request to which RDBMS returns a result set, which must t
 
 ```java
 List<String> titles = queries
-        .query("SELECT title FROM books")
-        .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
+    .query("SELECT title FROM books")
+    .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 ```
 
 #### Using parameters
 
 ```java
 List<String> titles = queries
-        .query("SELECT title FROM books WHERE title LIKE ?",
-                new StringArgument("Clean%"))
-        .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
+    .query("SELECT title FROM books WHERE title LIKE ?",
+            new StringArgument("Clean%"))
+    .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 ```
 
 Implementations of the `Argument` interface are used to define arguments. `Superb-jdbc` has several commonly used
@@ -84,7 +84,7 @@ Query titlesQuery = queries.query("SELECT title FROM books");
 titlesQuery.append(" WHERE title LIKE ?", new StringArgument("Clean%"));
 titlesQuery.append(" LIMIT ?", new IntArgument(10));
 List<String> titles = titlesQuery
-        .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
+    .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 ```
 
 This approach can be useful, for example, when we have a web form and, depending on the fields filled in it, we want to
@@ -98,16 +98,16 @@ The `Change` interface is a request to change the database (_DDL or DML_).
 
 ```java
 changes
-        .change("INSERT INTO books(title) VALUES ('Clean Code')")
-        .apply();
+    .change("INSERT INTO books(title) VALUES ('Clean Code')")
+    .apply();
 ```
 
 #### Using parameters
 
 ```java
 changes
-        .change("INSERT INTO books(title) VALUES (?)", new StringArgument("Clean Code"))
-        .apply();
+    .change("INSERT INTO books(title) VALUES (?)", new StringArgument("Clean Code"))
+    .apply();
 ```
 
 ### Batch
