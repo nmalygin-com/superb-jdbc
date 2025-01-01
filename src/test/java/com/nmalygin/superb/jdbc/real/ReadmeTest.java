@@ -193,6 +193,6 @@ public class ReadmeTest {
             transaction.commit();
         }
 
-        assertEquals(3, booksTable.books().size());
+        assertEquals(2, booksTable.books().size());
     }
 }
