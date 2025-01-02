@@ -37,7 +37,9 @@ import com.nmalygin.superb.jdbc.real.testdb.LibraryDB;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,7 +60,7 @@ public class ReadmeTest {
     }
 
     @Test
-    void simpleSelect() throws SQLException {
+    void querySimpleExample() throws SQLException {
         final DataSource dataSource = new H2DataSource();
         new LibraryDB(dataSource).init();
         final BooksTable booksTable = new DataSourceBooksTable(dataSource);
@@ -74,7 +76,7 @@ public class ReadmeTest {
     }
 
     @Test
-    void selectWithParams() throws SQLException {
+    void queryUsingParams() throws SQLException {
         final DataSource dataSource = new H2DataSource();
         new LibraryDB(dataSource).init();
         final BooksTable booksTable = new DataSourceBooksTable(dataSource);
@@ -93,7 +95,7 @@ public class ReadmeTest {
     }
 
     @Test
-    void buildingSelect() throws SQLException {
+    void queryBuilding() throws SQLException {
         final DataSource dataSource = new H2DataSource();
         new LibraryDB(dataSource).init();
         final BooksTable booksTable = new DataSourceBooksTable(dataSource);
@@ -101,13 +103,48 @@ public class ReadmeTest {
 
         Queries queries = new RealRdbms(dataSource);
 
-        Query titlesQuery = queries.query("SELECT title FROM books");
-        titlesQuery.append(" WHERE title LIKE ?", new StringArgument("Clean%"));
-        titlesQuery.append(" LIMIT ?", new IntArgument(10));
+        Query titlesQuery = queries.query("SELECT title FROM books ");
+        titlesQuery.append("WHERE title LIKE ? ", new StringArgument("Clean%"));
+        titlesQuery.append("LIMIT ?", new IntArgument(10));
         List<String> titles = titlesQuery.executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 
         assertEquals(1, titles.size());
         assertEquals("Clean Code", titles.get(0));
+    }
+
+    @Test
+    void queryCustomRsh() throws SQLException {
+        final DataSource dataSource = new H2DataSource();
+        new LibraryDB(dataSource).init();
+        final BooksTable booksTable = new DataSourceBooksTable(dataSource);
+        booksTable.insert(UUID.randomUUID(), "Clean Code");
+
+        class Book {
+            private final UUID id;
+            private final Queries queries;
+
+            public Book(ResultSet resultSet, Queries queries) throws SQLException {
+                this.id = resultSet.getObject("id", UUID.class);
+                this.queries = queries;
+            }
+
+            // methods: title, changeTitle, etc.
+        }
+
+        Queries queries = new RealRdbms(dataSource);
+        List<Book> titles = queries
+                .query("SELECT id FROM books")
+                .executeWith(resultSet -> {
+                            final List<Book> books = new ArrayList<>();
+                            while (resultSet.next()) {
+                                books.add(new Book(resultSet, queries));
+                            }
+
+                            return books;
+                        }
+                );
+
+        assertEquals(1, titles.size());
     }
 
     @Test
