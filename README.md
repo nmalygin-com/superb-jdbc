@@ -196,6 +196,4 @@ try (Transaction transaction = transactions.transaction()) {
 
 ## Contributing
 
-If you find the **Superb JDBC** useful and want to help, you can:
-1. Create an issue.
-2. Resolve a created issue.
+If you find the **Superb JDBC** useful and want to help, you can: _create an issue_ or _resolve a issue_.
