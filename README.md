@@ -28,7 +28,9 @@ Rdbms rdbms = new RealRdbms(dataSource);
 
 3. Use the rdbms object
 ```java
-rdbms.change("INSERT INTO books(title) VALUES ('Clean Code')").apply();
+rdbms
+    .change("INSERT INTO books(title) VALUES ('Clean Code')")
+    .apply();
 ```
 
 ## Abstractions
@@ -38,7 +40,7 @@ rdbms.change("INSERT INTO books(title) VALUES ('Clean Code')").apply();
 Interface `Rdbms` combines interfaces: `Queries`, `Changes`, `Batches`, `Transactions` (factories of objects `Query`, 
 `Change`, `Batch` and `Transaction`).
 
-This separation of interfaces allows us to not violate the _Liskov's Substitution Principle_ in places where we 
+This separation of interfaces allows us to not violate the _Interface Segregation Principle (ISP)_ in places where we 
 want to provide partial functionality.
 
 Note that extracting interfaces also allows us to use doubles (Fake, Stub, etc.) to write tests.
@@ -80,15 +82,47 @@ define the query and then set the parameter values).
 #### Building a query
 
 ```java
-Query titlesQuery = queries.query("SELECT title FROM books");
-titlesQuery.append(" WHERE title LIKE ?", new StringArgument("Clean%"));
-titlesQuery.append(" LIMIT ?", new IntArgument(10));
+Query titlesQuery = queries.query("SELECT title FROM books ");
+titlesQuery.append("WHERE title LIKE ? ", new StringArgument("Clean%"));
+titlesQuery.append("LIMIT ?", new IntArgument(10));
 List<String> titles = titlesQuery
     .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 ```
 
 This approach can be useful, for example, when we have a web form and, depending on the fields filled in it, we want to
 be able to change the structure of our query (include or exclude some parts of the query).
+
+#### Custom ResultSetHandler
+
+```java
+class Book {
+    private final UUID id;
+    private final Queries queries;
+
+    public Book(ResultSet resultSet, Queries queries) throws SQLException {
+        this.id = resultSet.getObject("id", UUID.class);
+        this.queries = queries;
+    }
+
+    // methods: title(), changeTitle(String newTitle), etc.
+}
+
+List<Book> titles = queries
+        .query("SELECT id FROM books")
+        .executeWith(resultSet -> {
+                    final List<Book> books = new ArrayList<>();
+                    while (resultSet.next()) {
+                        books.add(new Book(resultSet, queries));
+                    }
+
+                    return books;
+                }
+        );
+```
+
+Method `executeWith` accepts an object implementing interface `ResultSetHandler`. In turn, the interface
+`ResultSetHandler` has a single method `handle`, which must process the result set obtained as a result of the SQL
+query and return some object.
 
 ### Change
 
@@ -159,3 +193,9 @@ try (Transaction transaction = transactions.transaction()) {
     transaction.commit();
 }
 ```
+
+## Contributing
+
+If you find the **Superb JDBC** useful and want to help, you can:
+1. Create an issue.
+2. Resolve a created issue.
