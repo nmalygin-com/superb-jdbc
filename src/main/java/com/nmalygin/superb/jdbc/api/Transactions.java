@@ -39,15 +39,9 @@ public interface Transactions {
     Transaction transaction() throws SQLException;
 
     /**
-     *
      * @param isolationLevel the transaction isolation level.
-     * Level one of the following {@code Connection} constants:
-     * {@code Connection.TRANSACTION_READ_UNCOMMITTED},
-     * {@code Connection.TRANSACTION_READ_COMMITTED},
-     * {@code Connection.TRANSACTION_REPEATABLE_READ}, or
-     * {@code Connection.TRANSACTION_SERIALIZABLE}.
      * @return New transaction with the isolationLevel
      * @throws SQLException SQLException
      */
-    Transaction transaction(int isolationLevel) throws SQLException;
+    Transaction transaction(IsolationLevel isolationLevel) throws SQLException;
 }

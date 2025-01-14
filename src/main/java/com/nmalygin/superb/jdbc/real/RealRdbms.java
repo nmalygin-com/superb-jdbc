@@ -84,7 +84,7 @@ public final class RealRdbms implements Rdbms {
     }
 
     @Override
-    public Transaction transaction(final int isolationLevel) throws SQLException {
+    public Transaction transaction(final IsolationLevel isolationLevel) throws SQLException {
         final Connection connection = dataSource.getConnection();
 
         try {
@@ -95,7 +95,7 @@ public final class RealRdbms implements Rdbms {
         }
 
         try {
-            connection.setTransactionIsolation(isolationLevel);
+            isolationLevel.applyTo(connection);
         } catch (Throwable t) {
             connection.close();
             throw t;

@@ -37,7 +37,7 @@ import java.util.List;
  *
  * @author Nikolai Malygin
  */
-public class ColumnToListRsh<T> implements ResultSetHandler<List<T>> {
+public final class ColumnToListRsh<T> implements ResultSetHandler<List<T>> {
 
     private final Column<T> column;
 
