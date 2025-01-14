@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2024 Nikolai Malygin
+ * Copyright (c) 2025 Nikolai Malygin
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,29 @@
  * SOFTWARE.
  */
 
-package com.nmalygin.superb.jdbc.api.handlers.columns;
+package com.nmalygin.superb.jdbc.api.isolation;
 
-import java.sql.ResultSet;
+import com.nmalygin.superb.jdbc.api.IsolationLevel;
+
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * StringColumn
+ * The repeatable read isolation level
  *
  * @author Nikolai Malygin
  */
-public final class StringColumn implements Column<String> {
-
-    private final String name;
-
-    /**
-     *
-     * @param name column name
-     */
-    public StringColumn(final String name) {
-        this.name = name;
-    }
+@SuppressWarnings("PMD.AtLeastOneConstructor")
+public final class RepeatableRead implements IsolationLevel {
 
     /**
+     * Apply the isolation level for the connection.
      *
-     * @param resultSet Result set on the specific row
-     * @return value of a cell in the row for the column
+     * @param connection JDBC Connection
      * @throws SQLException SQLException
      */
     @Override
-    public String cellValue(final ResultSet resultSet) throws SQLException {
-        return resultSet.getString(name);
+    public void applyTo(final Connection connection) throws SQLException {
+        connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
     }
 }

@@ -66,8 +66,9 @@ List<String> titles = queries
 
 ```java
 List<String> titles = queries
-    .query("SELECT title FROM books WHERE title LIKE ?",
-            new StringArgument("Clean%"))
+    .query("SELECT title FROM books WHERE title = ? OR title = ?",
+            new StringArgument("Clean Code"),
+            new StringArgument("Code Complete"))
     .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 ```
 
@@ -82,10 +83,9 @@ define the query and then set the parameter values).
 #### Building a query
 
 ```java
-Query titlesQuery = queries.query("SELECT title FROM books ");
-titlesQuery.append("WHERE title LIKE ? ", new StringArgument("Clean%"));
-titlesQuery.append("LIMIT ?", new IntArgument(10));
-List<String> titles = titlesQuery
+List<String> titles = queries.query("SELECT title FROM books ")
+    .append("WHERE title LIKE ? ", new StringArgument("Clean%"))
+    .append("LIMIT ?", new IntArgument(10))
     .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 ```
 
@@ -177,7 +177,7 @@ try (Transaction transaction = transactions.transaction()) {
 #### Setting the transaction isolation level
 
 ```java
-try (Transaction transaction = transactions.transaction(1)) {
+try (Transaction transaction = transactions.transaction(new ReadCommitted())) {
     // some code
 }
 ```

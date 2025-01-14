@@ -81,17 +81,18 @@ public class ReadmeTest {
         new LibraryDB(dataSource).init();
         final BooksTable booksTable = new DataSourceBooksTable(dataSource);
         booksTable.insert(UUID.randomUUID(), "Clean Code");
+        booksTable.insert(UUID.randomUUID(), "Code Complete");
 
         Queries queries = new RealRdbms(dataSource);
         List<String> titles = queries
                 .query(
-                        "SELECT title FROM books WHERE title LIKE ?",
-                        new StringArgument("Clean%")
+                        "SELECT title FROM books WHERE title = ? OR title = ?",
+                        new StringArgument("Clean Code"),
+                        new StringArgument("Code Complete")
                 )
                 .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 
-        assertEquals(1, titles.size());
-        assertEquals("Clean Code", titles.get(0));
+        assertEquals(2, titles.size());
     }
 
     @Test
@@ -103,10 +104,10 @@ public class ReadmeTest {
 
         Queries queries = new RealRdbms(dataSource);
 
-        Query titlesQuery = queries.query("SELECT title FROM books ");
-        titlesQuery.append("WHERE title LIKE ? ", new StringArgument("Clean%"));
-        titlesQuery.append("LIMIT ?", new IntArgument(10));
-        List<String> titles = titlesQuery.executeWith(new ColumnToListRsh<>(new StringColumn("title")));
+        List<String> titles = queries.query("SELECT title FROM books ")
+                .append("WHERE title LIKE ? ", new StringArgument("Clean%"))
+                .append("LIMIT ?", new IntArgument(10))
+                .executeWith(new ColumnToListRsh<>(new StringColumn("title")));
 
         assertEquals(1, titles.size());
         assertEquals("Clean Code", titles.get(0));
